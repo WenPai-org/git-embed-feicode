@@ -57,9 +57,33 @@ class GitEmbedFeiCode {
                     'type' => 'boolean',
                     'default' => true
                 ],
-                'showDownload' => [
+                'showLanguage' => [
                     'type' => 'boolean',
                     'default' => true
+                ],
+                'showActions' => [
+                    'type' => 'boolean',
+                    'default' => true
+                ],
+                'showViewButton' => [
+                    'type' => 'boolean',
+                    'default' => true
+                ],
+                'showCloneButton' => [
+                    'type' => 'boolean',
+                    'default' => true
+                ],
+                'showDownloadButton' => [
+                    'type' => 'boolean',
+                    'default' => true
+                ],
+                'cardStyle' => [
+                    'type' => 'string',
+                    'default' => 'default'
+                ],
+                'buttonStyle' => [
+                    'type' => 'string',
+                    'default' => 'primary'
                 ],
                 'alignment' => [
                     'type' => 'string',
@@ -157,62 +181,135 @@ class GitEmbedFeiCode {
     private function render_repository_card(array $repo_data, array $attributes): string {
         $show_description = $attributes['showDescription'] ?? true;
         $show_stats = $attributes['showStats'] ?? true;
-        $show_download = $attributes['showDownload'] ?? true;
+        $show_language = $attributes['showLanguage'] ?? true;
+        $show_actions = $attributes['showActions'] ?? true;
+        $show_view_button = $attributes['showViewButton'] ?? true;
+        $show_clone_button = $attributes['showCloneButton'] ?? true;
+        $show_download_button = $attributes['showDownloadButton'] ?? true;
+        $card_style = $attributes['cardStyle'] ?? 'default';
+        $button_style = $attributes['buttonStyle'] ?? 'primary';
         $alignment = $attributes['alignment'] ?? 'none';
         
         $align_class = $alignment !== 'none' ? " align{$alignment}" : '';
+        $card_class = $card_style !== 'default' ? " git-embed-card-{$card_style}" : '';
+        
+        $download_url = str_replace('{archive_format}', 'zipball', $repo_data['archive_url']);
+        $download_url = str_replace('{/ref}', '/main', $download_url);
         
         ob_start();
         ?>
         <div class="wp-block-git-embed-feicode-repository<?php echo esc_attr($align_class); ?>">
-            <div class="git-embed-card">
+            <div class="git-embed-card<?php echo esc_attr($card_class); ?>">
                 <div class="git-embed-header">
                     <h3 class="git-embed-title">
+                        <span class="dashicons dashicons-admin-links git-embed-repo-icon"></span>
                         <a href="<?php echo esc_url($repo_data['html_url']); ?>" target="_blank" rel="noopener">
                             <?php echo esc_html($repo_data['full_name']); ?>
                         </a>
                     </h3>
-                    <?php if ($repo_data['language']): ?>
-                        <span class="git-embed-language"><?php echo esc_html($repo_data['language']); ?></span>
+                    <?php if ($show_language && $repo_data['language']): ?>
+                        <span class="git-embed-language">
+                            <span class="dashicons dashicons-editor-code"></span>
+                            <?php echo esc_html($repo_data['language']); ?>
+                        </span>
                     <?php endif; ?>
                 </div>
                 
                 <?php if ($show_description && $repo_data['description']): ?>
-                    <p class="git-embed-description"><?php echo esc_html($repo_data['description']); ?></p>
+                    <p class="git-embed-description">
+                        <span class="dashicons dashicons-text-page"></span>
+                        <?php echo esc_html($repo_data['description']); ?>
+                    </p>
                 <?php endif; ?>
                 
                 <?php if ($show_stats): ?>
                     <div class="git-embed-stats">
                         <span class="git-embed-stat">
-                            <span class="git-embed-icon">⭐</span>
-                            <?php echo number_format_i18n($repo_data['stargazers_count']); ?>
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="git-embed-stat-label">Stars:</span>
+                            <span class="git-embed-stat-value"><?php echo number_format_i18n($repo_data['stargazers_count']); ?></span>
                         </span>
                         <span class="git-embed-stat">
-                            <span class="git-embed-icon">🍴</span>
-                            <?php echo number_format_i18n($repo_data['forks_count']); ?>
+                            <span class="dashicons dashicons-networking"></span>
+                            <span class="git-embed-stat-label">Forks:</span>
+                            <span class="git-embed-stat-value"><?php echo number_format_i18n($repo_data['forks_count']); ?></span>
                         </span>
                         <span class="git-embed-stat">
-                            <span class="git-embed-icon">📝</span>
-                            <?php echo number_format_i18n($repo_data['open_issues_count']); ?>
+                            <span class="dashicons dashicons-editor-help"></span>
+                            <span class="git-embed-stat-label">Issues:</span>
+                            <span class="git-embed-stat-value"><?php echo number_format_i18n($repo_data['open_issues_count']); ?></span>
                         </span>
                     </div>
                 <?php endif; ?>
                 
-                <?php if ($show_download): ?>
+                <?php if ($show_actions && ($show_view_button || $show_clone_button || $show_download_button)): ?>
                     <div class="git-embed-actions">
-                        <a href="<?php echo esc_url($repo_data['html_url']); ?>" 
-                           class="git-embed-button git-embed-button-primary" 
-                           target="_blank" rel="noopener">
-                            View Repository
-                        </a>
-                        <a href="<?php echo esc_url($repo_data['clone_url']); ?>" 
-                           class="git-embed-button git-embed-button-secondary">
-                            Clone
-                        </a>
+                        <?php if ($show_view_button): ?>
+                            <a href="<?php echo esc_url($repo_data['html_url']); ?>" 
+                               class="git-embed-button git-embed-button-<?php echo esc_attr($button_style); ?>" 
+                               target="_blank" rel="noopener">
+                                <span class="dashicons dashicons-external"></span>
+                                View Repository
+                            </a>
+                        <?php endif; ?>
+                        
+                        <?php if ($show_clone_button): ?>
+                            <button type="button" 
+                                    class="git-embed-button git-embed-button-secondary git-embed-clone-btn" 
+                                    data-clone-url="<?php echo esc_attr($repo_data['clone_url']); ?>"
+                                    title="Click to copy clone URL">
+                                <span class="dashicons dashicons-admin-page"></span>
+                                Clone
+                            </button>
+                        <?php endif; ?>
+                        
+                        <?php if ($show_download_button): ?>
+                            <a href="<?php echo esc_url($download_url); ?>" 
+                               class="git-embed-button git-embed-button-secondary"
+                               download="<?php echo esc_attr($repo_data['name']); ?>.zip">
+                                <span class="dashicons dashicons-download"></span>
+                                Download ZIP
+                            </a>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
+        
+        <?php if ($show_clone_button): ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cloneButtons = document.querySelectorAll('.git-embed-clone-btn');
+            cloneButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const cloneUrl = this.dataset.cloneUrl;
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(cloneUrl).then(() => {
+                            const originalText = this.innerHTML;
+                            this.innerHTML = '<span class="dashicons dashicons-yes"></span>Copied!';
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                            }, 2000);
+                        });
+                    } else {
+                        const input = document.createElement('input');
+                        input.value = cloneUrl;
+                        document.body.appendChild(input);
+                        input.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(input);
+                        
+                        const originalText = this.innerHTML;
+                        this.innerHTML = '<span class="dashicons dashicons-yes"></span>Copied!';
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                        }, 2000);
+                    }
+                });
+            });
+        });
+        </script>
+        <?php endif; ?>
         <?php
         return ob_get_clean();
     }

@@ -47,9 +47,33 @@
                 type: 'boolean',
                 default: true
             },
-            showDownload: {
+            showLanguage: {
                 type: 'boolean',
                 default: true
+            },
+            showActions: {
+                type: 'boolean',
+                default: true
+            },
+            showViewButton: {
+                type: 'boolean',
+                default: true
+            },
+            showCloneButton: {
+                type: 'boolean',
+                default: true
+            },
+            showDownloadButton: {
+                type: 'boolean',
+                default: true
+            },
+            cardStyle: {
+                type: 'string',
+                default: 'default'
+            },
+            buttonStyle: {
+                type: 'string',
+                default: 'primary'
             },
             alignment: {
                 type: 'string',
@@ -59,7 +83,11 @@
 
         edit: function(props) {
             const { attributes, setAttributes } = props;
-            const { platform, owner, repo, showDescription, showStats, showDownload, alignment } = attributes;
+            const { 
+                platform, owner, repo, showDescription, showStats, showLanguage,
+                showActions, showViewButton, showCloneButton, showDownloadButton,
+                cardStyle, buttonStyle, alignment 
+            } = attributes;
             
             const [repoData, setRepoData] = useState(null);
             const [loading, setLoading] = useState(false);
@@ -131,52 +159,81 @@
                 if (!repoData) {
                     return el('div', { className: 'git-embed-placeholder' },
                         el('div', { className: 'git-embed-placeholder-content' },
-                            el('span', { className: 'git-embed-placeholder-icon' }, '📦'),
+                            el('span', { className: 'dashicons dashicons-admin-links git-embed-placeholder-icon' }),
                             el('h3', null, 'Git Repository Embed'),
                             el('p', null, 'Configure your repository details in the sidebar')
                         )
                     );
                 }
 
-                return el('div', { className: 'git-embed-card' },
+                const cardClass = `git-embed-card${cardStyle !== 'default' ? ` git-embed-card-${cardStyle}` : ''}`;
+                const downloadUrl = repoData.archive_url ? 
+                    repoData.archive_url.replace('{archive_format}', 'zipball').replace('{/ref}', '/main') : '';
+
+                return el('div', { className: cardClass },
                     el('div', { className: 'git-embed-header' },
                         el('h3', { className: 'git-embed-title' },
+                            el('span', { className: 'dashicons dashicons-admin-links git-embed-repo-icon' }),
                             el('a', {
                                 href: repoData.html_url,
                                 target: '_blank',
                                 rel: 'noopener'
                             }, repoData.full_name)
                         ),
-                        repoData.language && el('span', { className: 'git-embed-language' }, repoData.language)
-                    ),
-                    showDescription && repoData.description &&
-                        el('p', { className: 'git-embed-description' }, repoData.description),
-                    showStats && el('div', { className: 'git-embed-stats' },
-                        el('span', { className: 'git-embed-stat' },
-                            el('span', { className: 'git-embed-icon' }, '⭐'),
-                            repoData.stargazers_count.toLocaleString()
-                        ),
-                        el('span', { className: 'git-embed-stat' },
-                            el('span', { className: 'git-embed-icon' }, '🍴'),
-                            repoData.forks_count.toLocaleString()
-                        ),
-                        el('span', { className: 'git-embed-stat' },
-                            el('span', { className: 'git-embed-icon' }, '📝'),
-                            repoData.open_issues_count.toLocaleString()
+                        showLanguage && repoData.language && el('span', { className: 'git-embed-language' },
+                            el('span', { className: 'dashicons dashicons-editor-code' }),
+                            repoData.language
                         )
                     ),
-                    showDownload && el('div', { className: 'git-embed-actions' },
-                        el('a', {
-                            href: repoData.html_url,
-                            className: 'git-embed-button git-embed-button-primary',
-                            target: '_blank',
-                            rel: 'noopener'
-                        }, 'View Repository'),
-                        el('a', {
-                            href: repoData.clone_url,
-                            className: 'git-embed-button git-embed-button-secondary'
-                        }, 'Clone')
-                    )
+                    showDescription && repoData.description &&
+                        el('p', { className: 'git-embed-description' },
+                            el('span', { className: 'dashicons dashicons-text-page' }),
+                            repoData.description
+                        ),
+                    showStats && el('div', { className: 'git-embed-stats' },
+                        el('span', { className: 'git-embed-stat' },
+                            el('span', { className: 'dashicons dashicons-star-filled' }),
+                            el('span', { className: 'git-embed-stat-label' }, 'Stars:'),
+                            el('span', { className: 'git-embed-stat-value' }, repoData.stargazers_count.toLocaleString())
+                        ),
+                        el('span', { className: 'git-embed-stat' },
+                            el('span', { className: 'dashicons dashicons-networking' }),
+                            el('span', { className: 'git-embed-stat-label' }, 'Forks:'),
+                            el('span', { className: 'git-embed-stat-value' }, repoData.forks_count.toLocaleString())
+                        ),
+                        el('span', { className: 'git-embed-stat' },
+                            el('span', { className: 'dashicons dashicons-editor-help' }),
+                            el('span', { className: 'git-embed-stat-label' }, 'Issues:'),
+                            el('span', { className: 'git-embed-stat-value' }, repoData.open_issues_count.toLocaleString())
+                        )
+                    ),
+                    showActions && (showViewButton || showCloneButton || showDownloadButton) && 
+                        el('div', { className: 'git-embed-actions' },
+                            showViewButton && el('a', {
+                                href: repoData.html_url,
+                                className: `git-embed-button git-embed-button-${buttonStyle}`,
+                                target: '_blank',
+                                rel: 'noopener'
+                            }, 
+                                el('span', { className: 'dashicons dashicons-external' }),
+                                'View Repository'
+                            ),
+                            showCloneButton && el('span', {
+                                className: 'git-embed-button git-embed-button-secondary',
+                                title: `Clone URL: ${repoData.clone_url}`
+                            }, 
+                                el('span', { className: 'dashicons dashicons-admin-page' }),
+                                'Clone'
+                            ),
+                            showDownloadButton && el('a', {
+                                href: downloadUrl,
+                                className: 'git-embed-button git-embed-button-secondary',
+                                download: `${repoData.name}.zip`
+                            }, 
+                                el('span', { className: 'dashicons dashicons-download' }),
+                                'Download ZIP'
+                            )
+                        )
                 );
             };
 
@@ -228,14 +285,69 @@
                             onChange: (value) => setAttributes({ showDescription: value })
                         }),
                         el(ToggleControl, {
+                            label: __('Show Programming Language', 'git-embed-feicode'),
+                            checked: showLanguage,
+                            onChange: (value) => setAttributes({ showLanguage: value })
+                        }),
+                        el(ToggleControl, {
                             label: __('Show Statistics', 'git-embed-feicode'),
                             checked: showStats,
                             onChange: (value) => setAttributes({ showStats: value })
                         }),
                         el(ToggleControl, {
-                            label: __('Show Download Links', 'git-embed-feicode'),
-                            checked: showDownload,
-                            onChange: (value) => setAttributes({ showDownload: value })
+                            label: __('Show Action Buttons', 'git-embed-feicode'),
+                            checked: showActions,
+                            onChange: (value) => setAttributes({ showActions: value })
+                        })
+                    ),
+                    el(PanelBody, {
+                        title: __('Button Options', 'git-embed-feicode'),
+                        initialOpen: false
+                    },
+                        el(ToggleControl, {
+                            label: __('Show View Repository Button', 'git-embed-feicode'),
+                            checked: showViewButton,
+                            onChange: (value) => setAttributes({ showViewButton: value }),
+                            disabled: !showActions
+                        }),
+                        el(ToggleControl, {
+                            label: __('Show Clone Button', 'git-embed-feicode'),
+                            checked: showCloneButton,
+                            onChange: (value) => setAttributes({ showCloneButton: value }),
+                            disabled: !showActions
+                        }),
+                        el(ToggleControl, {
+                            label: __('Show Download ZIP Button', 'git-embed-feicode'),
+                            checked: showDownloadButton,
+                            onChange: (value) => setAttributes({ showDownloadButton: value }),
+                            disabled: !showActions
+                        }),
+                        el(SelectControl, {
+                            label: __('Button Style', 'git-embed-feicode'),
+                            value: buttonStyle,
+                            options: [
+                                { label: 'Primary (Green)', value: 'primary' },
+                                { label: 'Secondary (Gray)', value: 'secondary' },
+                                { label: 'Outline', value: 'outline' }
+                            ],
+                            onChange: (value) => setAttributes({ buttonStyle: value }),
+                            disabled: !showActions
+                        })
+                    ),
+                    el(PanelBody, {
+                        title: __('Style Options', 'git-embed-feicode'),
+                        initialOpen: false
+                    },
+                        el(SelectControl, {
+                            label: __('Card Style', 'git-embed-feicode'),
+                            value: cardStyle,
+                            options: [
+                                { label: 'Default', value: 'default' },
+                                { label: 'Minimal', value: 'minimal' },
+                                { label: 'Bordered', value: 'bordered' },
+                                { label: 'Shadow', value: 'shadow' }
+                            ],
+                            onChange: (value) => setAttributes({ cardStyle: value })
                         })
                     )
                 ),
