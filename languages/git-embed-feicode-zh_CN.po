@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Git Embed for feiCode 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/git-embed-feicode\n"
 "POT-Creation-Date: 2024-12-31 12:00+0000\n"
-"PO-Revision-Date: 2025-07-31 17:43+0800\n"
+"PO-Revision-Date: 2025-08-01 01:09+0800\n"
 "Last-Translator: feiCode Team\n"
 "Language-Team: Chinese (China)\n"
 "Language: zh_CN\n"
@@ -199,6 +199,9 @@ msgstr "查看仓库"
 
 msgid "Clone"
 msgstr "克隆"
+
+msgid "Download %s (%s)"
+msgstr "下载 %s (%s)"
 
 msgid "Download ZIP"
 msgstr "下载 ZIP"

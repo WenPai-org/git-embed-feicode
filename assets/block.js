@@ -131,12 +131,12 @@
 
             const fetchRepoData = () => {
                 if (!owner || !repo) {
-                    setError('Please enter repository owner and name');
+                    setError(__('Please enter repository owner and name', 'git-embed-feicode'));
                     return;
                 }
 
                 if ((platform === 'gitea' || platform === 'forgejo' || platform === 'gitlab' || platform === 'custom') && !customDomain) {
-                    setError(`Please enter custom domain for ${platform.charAt(0).toUpperCase() + platform.slice(1)}`);
+                    setError(__('Please enter custom domain for', 'git-embed-feicode') + ' ' + platform.charAt(0).toUpperCase() + platform.slice(1));
                     return;
                 }
 
@@ -163,13 +163,13 @@
                         setRepoData(data.data);
                         setError('');
                     } else {
-                        setError(data.data || 'Failed to fetch repository');
+                        setError(data.data || __('Failed to fetch repository', 'git-embed-feicode'));
                         setRepoData(null);
                     }
                 })
                 .catch(err => {
                     setLoading(false);
-                    setError('Network error occurred');
+                    setError(__('Network error occurred', 'git-embed-feicode'));
                     setRepoData(null);
                 });
             };
@@ -180,7 +180,6 @@
                 }
             }, [owner, repo, platform, customDomain, customSiteName]);
 
-            // 获取显示用的头像 URL（优先仓库头像）
             const getDisplayAvatarUrl = (repoData) => {
                 if (repoData.repo_avatar_url) {
                     return repoData.repo_avatar_url;
@@ -191,11 +190,15 @@
                 return '';
             };
 
+            const handleDownload = (url, filename) => {
+                window.open(url, '_blank');
+            };
+
             const renderPreview = () => {
                 if (loading) {
                     return el('div', { className: 'git-embed-loading' },
                         el(Spinner),
-                        el('p', null, 'Fetching repository data...')
+                        el('p', null, __('Fetching repository data...', 'git-embed-feicode'))
                     );
                 }
 
@@ -210,8 +213,8 @@
                     return el('div', { className: 'git-embed-placeholder' },
                         el('div', { className: 'git-embed-placeholder-content' },
                             el('span', { className: 'dashicons dashicons-admin-links git-embed-placeholder-icon' }),
-                            el('h3', null, 'Git Repository Embed'),
-                            el('p', null, 'Configure your repository details in the sidebar')
+                            el('h3', null, __('Git Repository Embed', 'git-embed-feicode')),
+                            el('p', null, __('Configure your repository details in the sidebar', 'git-embed-feicode'))
                         )
                     );
                 }
@@ -220,10 +223,13 @@
                 const avatarClass = `git-embed-avatar git-embed-avatar-${avatarSize}`;
                 const buttonClass = `git-embed-button-${buttonSize}`;
                 
-                // 使用简化的下载地址
-                const downloadUrl = repoData.archive_url || '';
+                const downloadInfo = repoData.download_info || {};
+                const downloadUrl = downloadInfo.url || repoData.archive_url || '';
+                const downloadFilename = downloadInfo.filename || `${repoData.name}.zip`;
+                const downloadTitle = downloadInfo.name ? 
+                    __('Download', 'git-embed-feicode') + ' ' + downloadInfo.name + ' (' + downloadInfo.version + ')' : 
+                    __('Download ZIP', 'git-embed-feicode');
                 
-                // 获取显示头像
                 const displayAvatarUrl = getDisplayAvatarUrl(repoData);
 
                 return el('div', { className: cardClass },
@@ -251,7 +257,7 @@
                                 src: displayAvatarUrl,
                                 alt: repoData.name,
                                 className: avatarClass,
-                                title: repoData.repo_avatar_url ? 'Repository Avatar' : 'Owner Avatar'
+                                title: repoData.repo_avatar_url ? __('Repository Avatar', 'git-embed-feicode') : __('Owner Avatar', 'git-embed-feicode')
                             }),
                             el('div', { className: 'git-embed-title-content' },
                                 el('h3', { className: 'git-embed-title' },
@@ -272,9 +278,9 @@
                                     }, `@${repoData.owner.login}`),
                                     repoData.repo_avatar_url && el('span', { 
                                         className: 'git-embed-repo-avatar-badge',
-                                        title: 'Repository has custom avatar'
+                                        title: __('Repository has custom avatar', 'git-embed-feicode')
                                     },
-                                        el('span', { className: 'dashicons dashicons-format-image' })
+                                        el('span', { className: '' })
                                     )
                                 )
                             )
@@ -292,23 +298,23 @@
                     
                     showDescription && repoData.description &&
                         el('p', { className: 'git-embed-description' },
-                            el('span', { className: 'dashicons dashicons-text-page' }),
+                            el('span', { className: 'dashicons dashicons-editor-quote' }),
                             repoData.description
                         ),
                     showStats && el('div', { className: 'git-embed-stats' },
                         el('span', { className: 'git-embed-stat' },
                             el('span', { className: 'dashicons dashicons-star-filled' }),
-                            el('span', { className: 'git-embed-stat-label' }, 'Stars:'),
+                            el('span', { className: 'git-embed-stat-label' }, __('Stars:', 'git-embed-feicode')),
                             el('span', { className: 'git-embed-stat-value' }, repoData.stargazers_count.toLocaleString())
                         ),
                         el('span', { className: 'git-embed-stat' },
                             el('span', { className: 'dashicons dashicons-networking' }),
-                            el('span', { className: 'git-embed-stat-label' }, 'Forks:'),
+                            el('span', { className: 'git-embed-stat-label' }, __('Forks:', 'git-embed-feicode')),
                             el('span', { className: 'git-embed-stat-value' }, repoData.forks_count.toLocaleString())
                         ),
                         el('span', { className: 'git-embed-stat' },
                             el('span', { className: 'dashicons dashicons-editor-help' }),
-                            el('span', { className: 'git-embed-stat-label' }, 'Issues:'),
+                            el('span', { className: 'git-embed-stat-label' }, __('Issues:', 'git-embed-feicode')),
                             el('span', { className: 'git-embed-stat-value' }, repoData.open_issues_count.toLocaleString())
                         )
                     ),
@@ -321,22 +327,24 @@
                                 rel: 'noopener'
                             }, 
                                 el('span', { className: 'dashicons dashicons-external' }),
-                                'View Repository'
+                                __('View Repository', 'git-embed-feicode')
                             ),
                             showCloneButton && el('span', {
                                 className: `git-embed-button git-embed-button-secondary ${buttonClass}`,
-                                title: `Clone URL: ${repoData.clone_url}`
+                                title: __('Clone URL:', 'git-embed-feicode') + ' ' + repoData.clone_url
                             }, 
                                 el('span', { className: 'dashicons dashicons-admin-page' }),
-                                'Clone'
+                                __('Clone', 'git-embed-feicode')
                             ),
-                            showDownloadButton && downloadUrl && el('a', {
-                                href: downloadUrl,
+                            showDownloadButton && downloadUrl && el('button', {
                                 className: `git-embed-button git-embed-button-secondary ${buttonClass}`,
-                                download: `${repoData.name}-${repoData.default_branch || 'main'}.zip`
+                                onClick: () => handleDownload(downloadUrl, downloadFilename),
+                                title: downloadTitle
                             }, 
                                 el('span', { className: 'dashicons dashicons-download' }),
-                                'Download ZIP'
+                                downloadInfo.type === 'release' && downloadInfo.version ? 
+                                    __('Download', 'git-embed-feicode') + ' ' + downloadInfo.version : 
+                                    __('Download ZIP', 'git-embed-feicode')
                             ),
                             showIssuesButton && el('a', {
                                 href: `${repoData.html_url}/issues`,
@@ -345,7 +353,7 @@
                                 rel: 'noopener'
                             }, 
                                 el('span', { className: 'dashicons dashicons-editor-help' }),
-                                `Issues (${repoData.open_issues_count.toLocaleString()})`
+                                __('Issues', 'git-embed-feicode') + ' (' + repoData.open_issues_count.toLocaleString() + ')'
                             ),
                             showForksButton && el('a', {
                                 href: `${repoData.html_url}/forks`,
@@ -354,7 +362,7 @@
                                 rel: 'noopener'
                             }, 
                                 el('span', { className: 'dashicons dashicons-networking' }),
-                                `Forks (${repoData.forks_count.toLocaleString()})`
+                                __('Forks', 'git-embed-feicode') + ' (' + repoData.forks_count.toLocaleString() + ')'
                             )
                         )
                 );
@@ -376,14 +384,14 @@
                             label: __('Platform', 'git-embed-feicode'),
                             value: platform,
                             options: [
-                                { label: 'GitHub', value: 'github' },
-                                { label: 'Gitea', value: 'gitea' },
-                                { label: 'Forgejo', value: 'forgejo' },
-                                { label: 'GitLab (Self-hosted)', value: 'gitlab' },
-                                { label: 'Custom Git Service', value: 'custom' }
+                                { label: __('GitHub', 'git-embed-feicode'), value: 'github' },
+                                { label: __('Gitea', 'git-embed-feicode'), value: 'gitea' },
+                                { label: __('Forgejo', 'git-embed-feicode'), value: 'forgejo' },
+                                { label: __('GitLab (Self-hosted)', 'git-embed-feicode'), value: 'gitlab' },
+                                { label: __('Custom Git Service', 'git-embed-feicode'), value: 'custom' }
                             ],
                             onChange: (value) => setAttributes({ platform: value }),
-                            help: platform !== 'github' ? 'Self-hosted Git service requires custom domain' : '',
+                            help: platform !== 'github' ? __('Self-hosted Git service requires custom domain', 'git-embed-feicode') : '',
                             __next40pxDefaultSize: true,
                             __nextHasNoMarginBottom: true
                         }),
@@ -391,8 +399,8 @@
                             label: __('Custom Domain', 'git-embed-feicode'),
                             value: customDomain,
                             onChange: (value) => setAttributes({ customDomain: value }),
-                            placeholder: 'e.g. git.example.com',
-                            help: `Enter the domain of your ${platform.charAt(0).toUpperCase() + platform.slice(1)} instance`,
+                            placeholder: __('e.g. git.example.com', 'git-embed-feicode'),
+                            help: __('Enter the domain of your', 'git-embed-feicode') + ' ' + platform.charAt(0).toUpperCase() + platform.slice(1) + ' ' + __('instance', 'git-embed-feicode'),
                             __next40pxDefaultSize: true,
                             __nextHasNoMarginBottom: true
                         }),
@@ -400,8 +408,8 @@
                             label: __('Custom Site Name (Optional)', 'git-embed-feicode'),
                             value: customSiteName,
                             onChange: (value) => setAttributes({ customSiteName: value }),
-                            placeholder: 'e.g. Company Git',
-                            help: 'Override the automatically detected site name',
+                            placeholder: __('e.g. Company Git', 'git-embed-feicode'),
+                            help: __('Override the automatically detected site name', 'git-embed-feicode'),
                             __next40pxDefaultSize: true,
                             __nextHasNoMarginBottom: true
                         }),
@@ -409,7 +417,7 @@
                             label: __('Repository Owner', 'git-embed-feicode'),
                             value: owner,
                             onChange: (value) => setAttributes({ owner: value }),
-                            placeholder: 'e.g. facebook',
+                            placeholder: __('e.g. facebook', 'git-embed-feicode'),
                             __next40pxDefaultSize: true,
                             __nextHasNoMarginBottom: true
                         }),
@@ -417,7 +425,7 @@
                             label: __('Repository Name', 'git-embed-feicode'),
                             value: repo,
                             onChange: (value) => setAttributes({ repo: value }),
-                            placeholder: 'e.g. react',
+                            placeholder: __('e.g. react', 'git-embed-feicode'),
                             __next40pxDefaultSize: true,
                             __nextHasNoMarginBottom: true
                         }),
@@ -426,7 +434,7 @@
                             onClick: fetchRepoData,
                             disabled: loading || !owner || !repo || 
                                 (platform !== 'github' && !customDomain)
-                        }, loading ? 'Fetching...' : 'Fetch Repository')
+                        }, loading ? __('Fetching...', 'git-embed-feicode') : __('Fetch Repository', 'git-embed-feicode'))
                     ),
                     el(PanelBody, {
                         title: __('Display Options', 'git-embed-feicode'),
@@ -441,15 +449,15 @@
                             label: __('Show Avatar', 'git-embed-feicode'),
                             checked: showAvatar,
                             onChange: (value) => setAttributes({ showAvatar: value }),
-                            help: 'Shows repository avatar if available, otherwise owner avatar'
+                            help: __('Shows repository avatar if available, otherwise owner avatar', 'git-embed-feicode')
                         }),
                         showAvatar && el(SelectControl, {
                             label: __('Avatar Size', 'git-embed-feicode'),
                             value: avatarSize,
                             options: [
-                                { label: 'Small', value: 'small' },
-                                { label: 'Medium', value: 'medium' },
-                                { label: 'Large', value: 'large' }
+                                { label: __('Small', 'git-embed-feicode'), value: 'small' },
+                                { label: __('Medium', 'git-embed-feicode'), value: 'medium' },
+                                { label: __('Large', 'git-embed-feicode'), value: 'large' }
                             ],
                             onChange: (value) => setAttributes({ avatarSize: value }),
                             __next40pxDefaultSize: true,
@@ -514,11 +522,11 @@
                             label: __('Button Style', 'git-embed-feicode'),
                             value: buttonStyle,
                             options: [
-                                { label: 'Default', value: 'default' },
-                                { label: 'Primary (Green)', value: 'primary' },
-                                { label: 'Secondary (Gray)', value: 'secondary' },
-                                { label: 'Outline', value: 'outline' },
-                                { label: 'Ghost', value: 'ghost' }
+                                { label: __('Default', 'git-embed-feicode'), value: 'default' },
+                                { label: __('Primary (Green)', 'git-embed-feicode'), value: 'primary' },
+                                { label: __('Secondary (Gray)', 'git-embed-feicode'), value: 'secondary' },
+                                { label: __('Outline', 'git-embed-feicode'), value: 'outline' },
+                                { label: __('Ghost', 'git-embed-feicode'), value: 'ghost' }
                             ],
                             onChange: (value) => setAttributes({ buttonStyle: value }),
                             disabled: !showActions,
@@ -529,9 +537,9 @@
                             label: __('Button Size', 'git-embed-feicode'),
                             value: buttonSize,
                             options: [
-                                { label: 'Small', value: 'small' },
-                                { label: 'Medium', value: 'medium' },
-                                { label: 'Large', value: 'large' }
+                                { label: __('Small', 'git-embed-feicode'), value: 'small' },
+                                { label: __('Medium', 'git-embed-feicode'), value: 'medium' },
+                                { label: __('Large', 'git-embed-feicode'), value: 'large' }
                             ],
                             onChange: (value) => setAttributes({ buttonSize: value }),
                             disabled: !showActions,
@@ -547,12 +555,12 @@
                             label: __('Card Style', 'git-embed-feicode'),
                             value: cardStyle,
                             options: [
-                                { label: 'Default', value: 'default' },
-                                { label: 'Minimal', value: 'minimal' },
-                                { label: 'Bordered', value: 'bordered' },
-                                { label: 'Shadow', value: 'shadow' },
-                                { label: 'Gradient', value: 'gradient' },
-                                { label: 'Glassmorphism', value: 'glass' }
+                                { label: __('Default', 'git-embed-feicode'), value: 'default' },
+                                { label: __('Minimal', 'git-embed-feicode'), value: 'minimal' },
+                                { label: __('Bordered', 'git-embed-feicode'), value: 'bordered' },
+                                { label: __('Shadow', 'git-embed-feicode'), value: 'shadow' },
+                                { label: __('Gradient', 'git-embed-feicode'), value: 'gradient' },
+                                { label: __('Glassmorphism', 'git-embed-feicode'), value: 'glass' }
                             ],
                             onChange: (value) => setAttributes({ cardStyle: value }),
                             __next40pxDefaultSize: true,

@@ -13,23 +13,128 @@
       "Embed a Git repository with information and stats": [
         "嵌入包含信息和统计数据的 Git 仓库"
       ],
+      "Please enter repository owner and name": [
+        "请输入仓库所有者和名称"
+      ],
+      "Please enter custom domain for": [
+        "请输入自定义域名："
+      ],
+      "Failed to fetch repository": [
+        "获取仓库失败"
+      ],
+      "Network error occurred": [
+        "网络错误"
+      ],
+      "Fetching repository data...": [
+        "正在获取仓库数据..."
+      ],
+      "Git Repository Embed": [
+        "Git 仓库嵌入"
+      ],
+      "Configure your repository details in the sidebar": [
+        "在侧边栏配置您的仓库详情"
+      ],
+      "Download": [
+        "下载"
+      ],
+      "Download ZIP": [
+        "下载 ZIP"
+      ],
+      "Repository Avatar": [
+        "仓库头像"
+      ],
+      "Owner Avatar": [
+        "所有者头像"
+      ],
+      "Repository has custom avatar": [
+        "仓库有自定义头像"
+      ],
+      "Stars:": [
+        "星标："
+      ],
+      "Forks:": [
+        "分叉："
+      ],
+      "Issues:": [
+        "议题："
+      ],
+      "View Repository": [
+        "查看仓库"
+      ],
+      "Clone URL:": [
+        "克隆链接："
+      ],
+      "Clone": [
+        "克隆"
+      ],
+      "Issues": [
+        "议题"
+      ],
+      "Forks": [
+        "分叉"
+      ],
       "Repository Settings": [
         "仓库设置"
       ],
       "Platform": [
         "平台"
       ],
+      "GitHub": [
+        "GitHub"
+      ],
+      "Gitea": [
+        "Gitea"
+      ],
+      "Forgejo": [
+        "Forgejo"
+      ],
+      "GitLab (Self-hosted)": [
+        "GitLab（自托管）"
+      ],
+      "Custom Git Service": [
+        "自定义 Git 服务"
+      ],
+      "Self-hosted Git service requires custom domain": [
+        "自托管 Git 服务需要自定义域名"
+      ],
       "Custom Domain": [
         "自定义域名"
+      ],
+      "e.g. git.example.com": [
+        "例如：git.example.com"
+      ],
+      "Enter the domain of your": [
+        "输入您的"
+      ],
+      "instance": [
+        "实例域名"
       ],
       "Custom Site Name (Optional)": [
         "自定义站点名称（可选）"
       ],
+      "e.g. Company Git": [
+        "例如：公司 Git"
+      ],
+      "Override the automatically detected site name": [
+        "覆盖自动检测的站点名称"
+      ],
       "Repository Owner": [
         "仓库所有者"
       ],
+      "e.g. facebook": [
+        "例如：facebook"
+      ],
       "Repository Name": [
         "仓库名称"
+      ],
+      "e.g. react": [
+        "例如：react"
+      ],
+      "Fetch Repository": [
+        "获取仓库"
+      ],
+      "Fetching...": [
+        "正在获取..."
       ],
       "Display Options": [
         "显示选项"
@@ -40,8 +145,20 @@
       "Show Avatar": [
         "显示头像"
       ],
+      "Shows repository avatar if available, otherwise owner avatar": [
+        "如果可用，显示仓库头像，否则显示所有者头像"
+      ],
       "Avatar Size": [
         "头像大小"
+      ],
+      "Small": [
+        "小"
+      ],
+      "Medium": [
+        "中"
+      ],
+      "Large": [
+        "大"
       ],
       "Show Description": [
         "显示描述"
@@ -76,75 +193,6 @@
       "Button Style": [
         "按钮样式"
       ],
-      "Button Size": [
-        "按钮大小"
-      ],
-      "Style Options": [
-        "样式选项"
-      ],
-      "Card Style": [
-        "卡片样式"
-      ],
-      "Please enter repository owner and name": [
-        "请输入仓库所有者和名称"
-      ],
-      "Please enter custom domain for %s": [
-        "请输入 %s 的自定义域名"
-      ],
-      "Fetching repository data...": [
-        "正在获取仓库数据..."
-      ],
-      "Failed to fetch repository": [
-        "获取仓库失败"
-      ],
-      "Network error occurred": [
-        "网络错误"
-      ],
-      "Configure your repository details in the sidebar": [
-        "在侧边栏配置您的仓库详情"
-      ],
-      "Fetch Repository": [
-        "获取仓库"
-      ],
-      "Fetching...": [
-        "正在获取..."
-      ],
-      "Self-hosted Git service requires custom domain": [
-        "自托管 Git 服务需要自定义域名"
-      ],
-      "Enter the domain of your %s instance": [
-        "输入您的 %s 实例域名"
-      ],
-      "Override the automatically detected site name": [
-        "覆盖自动检测的站点名称"
-      ],
-      "Shows repository avatar if available, otherwise owner avatar": [
-        "如果可用，显示仓库头像，否则显示所有者头像"
-      ],
-      "GitHub": [
-        "GitHub"
-      ],
-      "Gitea": [
-        "Gitea"
-      ],
-      "Forgejo": [
-        "Forgejo"
-      ],
-      "GitLab (Self-hosted)": [
-        "GitLab（自托管）"
-      ],
-      "Custom Git Service": [
-        "自定义 Git 服务"
-      ],
-      "Small": [
-        "小"
-      ],
-      "Medium": [
-        "中"
-      ],
-      "Large": [
-        "大"
-      ],
       "Default": [
         "默认"
       ],
@@ -160,6 +208,15 @@
       "Ghost": [
         "幽灵"
       ],
+      "Button Size": [
+        "按钮大小"
+      ],
+      "Style Options": [
+        "样式选项"
+      ],
+      "Card Style": [
+        "卡片样式"
+      ],
       "Minimal": [
         "简约"
       ],
@@ -174,6 +231,54 @@
       ],
       "Glassmorphism": [
         "玻璃态"
+      ],
+      "Repository information required": [
+        "需要仓库信息"
+      ],
+      "Custom domain required for %s": [
+        "%s 需要自定义域名"
+      ],
+      "Failed to fetch repository data": [
+        "获取仓库数据失败"
+      ],
+      "Latest Code": [
+        "最新代码"
+      ],
+      "Git Service": [
+        "Git 服务"
+      ],
+      "Organization": [
+        "组织"
+      ],
+      "User": [
+        "用户"
+      ],
+      "Download %s (%s)": [
+        "下载 %s (%s)"
+      ],
+      "Download %s": [
+        "下载 %s"
+      ],
+      "Issues (%s)": [
+        "议题 (%s)"
+      ],
+      "Forks (%s)": [
+        "分叉 (%s)"
+      ],
+      "Click to copy clone URL": [
+        "点击复制克隆链接"
+      ],
+      "Copied!": [
+        "已复制！"
+      ],
+      "Please enter custom domain for %s": [
+        "请输入 %s 的自定义域名"
+      ],
+      "Insufficient permissions": [
+        "权限不足"
+      ],
+      "Cache cleared successfully": [
+        "缓存清理成功"
       ]
     }
   }
