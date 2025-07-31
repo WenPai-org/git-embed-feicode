@@ -58,6 +58,30 @@
     border: none;
 }
 
+.git-embed-card-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+}
+
+.git-embed-card-gradient .git-embed-title a,
+.git-embed-card-gradient .git-embed-site-name a,
+.git-embed-card-gradient .git-embed-owner-link {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.git-embed-card-gradient .git-embed-description,
+.git-embed-card-gradient .git-embed-stat {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.git-embed-card-glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
 .git-embed-site-info {
     display: flex;
     align-items: center;
@@ -87,6 +111,46 @@
 .git-embed-site-name a:hover {
     color: #0969da;
     text-decoration: underline;
+}
+
+.git-embed-site-info.platform-github .git-embed-site-name a {
+    color: #24292f;
+}
+
+.git-embed-site-info.platform-github .git-embed-site-name a:hover {
+    color: #0969da;
+}
+
+.git-embed-site-info.platform-gitea .git-embed-site-name a {
+    color: #609926;
+}
+
+.git-embed-site-info.platform-gitea .git-embed-site-name a:hover {
+    color: #4a7220;
+}
+
+.git-embed-site-info.platform-forgejo .git-embed-site-name a {
+    color: #fb923c;
+}
+
+.git-embed-site-info.platform-forgejo .git-embed-site-name a:hover {
+    color: #ea580c;
+}
+
+.git-embed-site-info.platform-gitlab .git-embed-site-name a {
+    color: #fc6d26;
+}
+
+.git-embed-site-info.platform-gitlab .git-embed-site-name a:hover {
+    color: #e24000;
+}
+
+.git-embed-site-info.platform-custom .git-embed-site-name a {
+    color: #6366f1;
+}
+
+.git-embed-site-info.platform-custom .git-embed-site-name a:hover {
+    color: #4f46e5;
 }
 
 .git-embed-header {
@@ -318,6 +382,50 @@
     text-decoration: none;
 }
 
+.git-embed-button-ghost {
+    color: #0073aa;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.git-embed-button-ghost:hover {
+    background-color: rgba(0, 115, 170, 0.1);
+    border-color: #0073aa;
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.git-embed-button-default {
+    color: #24292f;
+    background-color: #f6f8fa;
+    border-color: #d1d5da;
+}
+
+.git-embed-button-default:hover {
+    background-color: #f3f4f6;
+    border-color: #c7ccd1;
+    color: #24292f;
+    text-decoration: none;
+}
+
+.git-embed-button-small {
+    padding: 4px 8px;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.git-embed-button-medium {
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.git-embed-button-large {
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
 .git-embed-clone-btn:hover .dashicons {
     animation: pulse 0.3s ease-in-out;
 }
@@ -523,4 +631,52 @@
 
 .git-embed-owner-type:empty {
     display: none;
+}
+
+.git-embed-custom-domain-notice {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.git-embed-platform-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.git-embed-platform-badge.platform-github {
+    background: #f6f8fa;
+    color: #24292f;
+}
+
+.git-embed-platform-badge.platform-gitea {
+    background: #f0f9e8;
+    color: #609926;
+}
+
+.git-embed-platform-badge.platform-forgejo {
+    background: #fef3e2;
+    color: #fb923c;
+}
+
+.components-panel__body .components-text-control__input:invalid {
+    border-color: #d63638;
+    box-shadow: 0 0 0 1px #d63638;
+}
+
+.components-panel__body .components-text-control__help {
+    font-size: 12px;
+    color: #757575;
+    margin-top: 4px;
 }

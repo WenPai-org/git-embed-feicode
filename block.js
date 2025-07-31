@@ -31,6 +31,14 @@
                 type: 'string',
                 default: 'github'
             },
+            customDomain: {
+                type: 'string',
+                default: ''
+            },
+            customSiteName: {
+                type: 'string',
+                default: ''
+            },
             owner: {
                 type: 'string',
                 default: ''
@@ -85,7 +93,19 @@
             },
             buttonStyle: {
                 type: 'string',
-                default: 'primary'
+                default: 'default'
+            },
+            buttonSize: {
+                type: 'string',
+                default: 'medium'
+            },
+            showIssuesButton: {
+                type: 'boolean',
+                default: false
+            },
+            showForksButton: {
+                type: 'boolean',
+                default: false
             },
             alignment: {
                 type: 'string',
@@ -96,9 +116,9 @@
         edit: function(props) {
             const { attributes, setAttributes } = props;
             const { 
-                platform, owner, repo, showDescription, showStats, showLanguage,
-                showActions, showViewButton, showCloneButton, showDownloadButton,
-                showAvatar, showSiteInfo, avatarSize, cardStyle, buttonStyle, alignment 
+                platform, customDomain, customSiteName, owner, repo, showDescription, showStats, showLanguage,
+                showActions, showViewButton, showCloneButton, showDownloadButton, showIssuesButton, showForksButton,
+                showAvatar, showSiteInfo, avatarSize, cardStyle, buttonStyle, buttonSize, alignment 
             } = attributes;
             
             const [repoData, setRepoData] = useState(null);
@@ -115,12 +135,19 @@
                     return;
                 }
 
+                if ((platform === 'gitea' || platform === 'forgejo' || platform === 'gitlab' || platform === 'custom') && !customDomain) {
+                    setError(`Please enter custom domain for ${platform.charAt(0).toUpperCase() + platform.slice(1)}`);
+                    return;
+                }
+
                 setLoading(true);
                 setError('');
 
                 const formData = new FormData();
                 formData.append('action', 'git_embed_fetch');
                 formData.append('platform', platform);
+                formData.append('customDomain', customDomain);
+                formData.append('customSiteName', customSiteName);
                 formData.append('owner', owner);
                 formData.append('repo', repo);
                 formData.append('nonce', gitEmbedAjax.nonce);
@@ -148,10 +175,10 @@
             };
 
             useEffect(() => {
-                if (owner && repo) {
+                if (owner && repo && (platform === 'github' || (platform !== 'github' && customDomain))) {
                     fetchRepoData();
                 }
-            }, [owner, repo, platform]);
+            }, [owner, repo, platform, customDomain, customSiteName]);
 
             const renderPreview = () => {
                 if (loading) {
@@ -180,15 +207,19 @@
 
                 const cardClass = `git-embed-card${cardStyle !== 'default' ? ` git-embed-card-${cardStyle}` : ''}`;
                 const avatarClass = `git-embed-avatar git-embed-avatar-${avatarSize}`;
+                const buttonClass = `git-embed-button-${buttonSize}`;
                 const downloadUrl = repoData.archive_url ? 
                     repoData.archive_url.replace('{archive_format}', 'zipball').replace('{/ref}', '/main') : '';
 
                 return el('div', { className: cardClass },
-                    showSiteInfo && repoData.site_info && el('div', { className: 'git-embed-site-info' },
+                    showSiteInfo && repoData.site_info && el('div', { 
+                        className: `git-embed-site-info platform-${repoData.platform || 'github'}` 
+                    },
                         el('img', {
                             src: repoData.site_info.favicon,
                             alt: repoData.site_info.name,
-                            className: 'git-embed-site-favicon'
+                            className: 'git-embed-site-favicon',
+                            onError: (e) => e.target.style.display = 'none'
                         }),
                         el('span', { className: 'git-embed-site-name' },
                             el('a', {
@@ -226,9 +257,14 @@
                                 )
                             )
                         ),
-                        showLanguage && repoData.language && el('span', { className: 'git-embed-language' },
-                            el('span', { className: 'dashicons dashicons-editor-code' }),
-                            repoData.language
+                        el('div', { className: 'git-embed-meta-section' },
+                            showLanguage && repoData.language && el('span', { className: 'git-embed-language' },
+                                el('span', { className: 'dashicons dashicons-editor-code' }),
+                                repoData.language
+                            ),
+                            el('span', { 
+                                className: `git-embed-platform-badge platform-${repoData.platform || 'github'}` 
+                            }, repoData.platform ? repoData.platform.toUpperCase() : 'GITHUB')
                         )
                     ),
                     
@@ -254,11 +290,11 @@
                             el('span', { className: 'git-embed-stat-value' }, repoData.open_issues_count.toLocaleString())
                         )
                     ),
-                    showActions && (showViewButton || showCloneButton || showDownloadButton) && 
+                    showActions && (showViewButton || showCloneButton || showDownloadButton || showIssuesButton || showForksButton) && 
                         el('div', { className: 'git-embed-actions' },
                             showViewButton && el('a', {
                                 href: repoData.html_url,
-                                className: `git-embed-button git-embed-button-${buttonStyle}`,
+                                className: `git-embed-button git-embed-button-${buttonStyle} ${buttonClass}`,
                                 target: '_blank',
                                 rel: 'noopener'
                             }, 
@@ -266,7 +302,7 @@
                                 'View Repository'
                             ),
                             showCloneButton && el('span', {
-                                className: 'git-embed-button git-embed-button-secondary',
+                                className: `git-embed-button git-embed-button-secondary ${buttonClass}`,
                                 title: `Clone URL: ${repoData.clone_url}`
                             }, 
                                 el('span', { className: 'dashicons dashicons-admin-page' }),
@@ -274,11 +310,29 @@
                             ),
                             showDownloadButton && el('a', {
                                 href: downloadUrl,
-                                className: 'git-embed-button git-embed-button-secondary',
+                                className: `git-embed-button git-embed-button-secondary ${buttonClass}`,
                                 download: `${repoData.name}.zip`
                             }, 
                                 el('span', { className: 'dashicons dashicons-download' }),
                                 'Download ZIP'
+                            ),
+                            showIssuesButton && el('a', {
+                                href: `${repoData.html_url}/issues`,
+                                className: `git-embed-button git-embed-button-outline ${buttonClass}`,
+                                target: '_blank',
+                                rel: 'noopener'
+                            }, 
+                                el('span', { className: 'dashicons dashicons-editor-help' }),
+                                `Issues (${repoData.open_issues_count.toLocaleString()})`
+                            ),
+                            showForksButton && el('a', {
+                                href: `${repoData.html_url}/forks`,
+                                className: `git-embed-button git-embed-button-outline ${buttonClass}`,
+                                target: '_blank',
+                                rel: 'noopener'
+                            }, 
+                                el('span', { className: 'dashicons dashicons-networking' }),
+                                `Forks (${repoData.forks_count.toLocaleString()})`
                             )
                         )
                 );
@@ -300,9 +354,28 @@
                             label: __('Platform', 'git-embed-feicode'),
                             value: platform,
                             options: [
-                                { label: 'GitHub', value: 'github' }
+                                { label: 'GitHub', value: 'github' },
+                                { label: 'Gitea', value: 'gitea' },
+                                { label: 'Forgejo', value: 'forgejo' },
+                                { label: 'GitLab (Self-hosted)', value: 'gitlab' },
+                                { label: 'Custom Git Service', value: 'custom' }
                             ],
-                            onChange: (value) => setAttributes({ platform: value })
+                            onChange: (value) => setAttributes({ platform: value }),
+                            help: platform !== 'github' ? 'Self-hosted Git service requires custom domain' : ''
+                        }),
+                        (platform !== 'github') && el(TextControl, {
+                            label: __('Custom Domain', 'git-embed-feicode'),
+                            value: customDomain,
+                            onChange: (value) => setAttributes({ customDomain: value }),
+                            placeholder: 'e.g. git.example.com',
+                            help: `Enter the domain of your ${platform.charAt(0).toUpperCase() + platform.slice(1)} instance`
+                        }),
+                        (platform !== 'github') && el(TextControl, {
+                            label: __('Custom Site Name (Optional)', 'git-embed-feicode'),
+                            value: customSiteName,
+                            onChange: (value) => setAttributes({ customSiteName: value }),
+                            placeholder: 'e.g. Company Git',
+                            help: 'Override the automatically detected site name'
                         }),
                         el(TextControl, {
                             label: __('Repository Owner', 'git-embed-feicode'),
@@ -319,7 +392,8 @@
                         el(Button, {
                             isPrimary: true,
                             onClick: fetchRepoData,
-                            disabled: loading || !owner || !repo
+                            disabled: loading || !owner || !repo || 
+                                (platform !== 'github' && !customDomain)
                         }, loading ? 'Fetching...' : 'Fetch Repository')
                     ),
                     el(PanelBody, {
@@ -389,15 +463,40 @@
                             onChange: (value) => setAttributes({ showDownloadButton: value }),
                             disabled: !showActions
                         }),
+                        el(ToggleControl, {
+                            label: __('Show Issues Button', 'git-embed-feicode'),
+                            checked: showIssuesButton,
+                            onChange: (value) => setAttributes({ showIssuesButton: value }),
+                            disabled: !showActions
+                        }),
+                        el(ToggleControl, {
+                            label: __('Show Forks Button', 'git-embed-feicode'),
+                            checked: showForksButton,
+                            onChange: (value) => setAttributes({ showForksButton: value }),
+                            disabled: !showActions
+                        }),
                         el(SelectControl, {
                             label: __('Button Style', 'git-embed-feicode'),
                             value: buttonStyle,
                             options: [
+                                { label: 'Default', value: 'default' },
                                 { label: 'Primary (Green)', value: 'primary' },
                                 { label: 'Secondary (Gray)', value: 'secondary' },
-                                { label: 'Outline', value: 'outline' }
+                                { label: 'Outline', value: 'outline' },
+                                { label: 'Ghost', value: 'ghost' }
                             ],
                             onChange: (value) => setAttributes({ buttonStyle: value }),
+                            disabled: !showActions
+                        }),
+                        el(SelectControl, {
+                            label: __('Button Size', 'git-embed-feicode'),
+                            value: buttonSize,
+                            options: [
+                                { label: 'Small', value: 'small' },
+                                { label: 'Medium', value: 'medium' },
+                                { label: 'Large', value: 'large' }
+                            ],
+                            onChange: (value) => setAttributes({ buttonSize: value }),
                             disabled: !showActions
                         })
                     ),
@@ -412,7 +511,9 @@
                                 { label: 'Default', value: 'default' },
                                 { label: 'Minimal', value: 'minimal' },
                                 { label: 'Bordered', value: 'bordered' },
-                                { label: 'Shadow', value: 'shadow' }
+                                { label: 'Shadow', value: 'shadow' },
+                                { label: 'Gradient', value: 'gradient' },
+                                { label: 'Glassmorphism', value: 'glass' }
                             ],
                             onChange: (value) => setAttributes({ cardStyle: value })
                         })
