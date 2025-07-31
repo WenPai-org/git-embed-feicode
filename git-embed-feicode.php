@@ -205,6 +205,11 @@ class GitEmbedFeiCode {
         
         $repo_data = $this->normalize_repository_data($data, $platform, $api_config);
         
+        if (!isset($data['default_branch']) && in_array($platform, ['gitea', 'forgejo', 'custom'])) {
+            $repo_data['default_branch'] = $this->detect_default_branch($api_config, $owner, $repo);
+            $repo_data['archive_url'] = $this->get_archive_url(array_merge($data, ['default_branch' => $repo_data['default_branch']]), $platform, $api_config['base_url']);
+        }
+        
         set_transient($cache_key, $repo_data, DAY_IN_SECONDS);
         
         if (!empty($repo_data['owner']['avatar_url'])) {
@@ -331,6 +336,27 @@ class GitEmbedFeiCode {
         return $fallback;
     }
     
+    private function detect_default_branch(array $api_config, string $owner, string $repo): string {
+        $branches_to_try = ['main', 'master', 'develop', 'dev'];
+        $base_url = $api_config['base_url'];
+        
+        foreach ($branches_to_try as $branch) {
+            $test_url = "{$base_url}/{$owner}/{$repo}/archive/{$branch}.zip";
+            $response = wp_remote_head($test_url, [
+                'timeout' => 5,
+                'headers' => [
+                    'User-Agent' => 'Git-Embed-FeiCode/1.0'
+                ]
+            ]);
+            
+            if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+                return $branch;
+            }
+        }
+        
+        return 'main';
+    }
+    
     private function normalize_domain(string $domain): string {
         $domain = trim($domain);
         $domain = preg_replace('/^https?:\/\//', '', $domain);
@@ -353,11 +379,12 @@ class GitEmbedFeiCode {
                 'open_issues_count' => $data['open_issues_count'] ?? 0,
                 'clone_url' => $data['http_url_to_repo'],
                 'archive_url' => $this->get_archive_url($data, $platform, $base_url),
+                'default_branch' => $data['default_branch'] ?? 'main',
                 'owner' => [
                     'login' => $data['namespace']['name'] ?? $data['owner']['username'],
                     'avatar_url' => $data['namespace']['avatar_url'] ?? $data['owner']['avatar_url'],
                     'html_url' => $base_url . '/' . ($data['namespace']['name'] ?? $data['owner']['username']),
-                    'type' => $this->normalize_owner_type($data['namespace']['kind'] ?? 'user')
+                    'type' => $this->normalize_owner_type($data['namespace']['kind'] ?? $data['owner']['type'] ?? 'user')
                 ],
                 'site_info' => $api_config['site_info'],
                 'platform' => $platform
@@ -375,11 +402,12 @@ class GitEmbedFeiCode {
             'open_issues_count' => $data['open_issues_count'] ?? $data['open_issues'] ?? 0,
             'clone_url' => $data['clone_url'],
             'archive_url' => $this->get_archive_url($data, $platform, $base_url),
+            'default_branch' => $data['default_branch'] ?? 'main',
             'owner' => [
                 'login' => $data['owner']['login'],
                 'avatar_url' => $data['owner']['avatar_url'],
                 'html_url' => $data['owner']['html_url'] ?? $base_url . '/' . $data['owner']['login'],
-                'type' => $this->normalize_owner_type($data['owner']['type'] ?? 'User')
+                'type' => $this->normalize_owner_type($data['owner']['type'] ?? 'user')
             ],
             'site_info' => $api_config['site_info'],
             'platform' => $platform
@@ -393,6 +421,7 @@ class GitEmbedFeiCode {
         
         $owner = $data['owner']['login'] ?? $data['namespace']['name'] ?? '';
         $repo = $data['name'];
+        $default_branch = $data['default_branch'] ?? 'main';
         
         switch ($platform) {
             case 'github':
@@ -403,19 +432,21 @@ class GitEmbedFeiCode {
             case 'gitea':
             case 'forgejo':
             case 'custom':
-                return "{$base_url}/{$owner}/{$repo}/archive/main.zip";
+                return "{$base_url}/{$owner}/{$repo}/archive/{$default_branch}.zip";
             default:
                 return '';
         }
     }
     
     private function normalize_owner_type(string $type): string {
-        $type = strtolower($type);
+        $type = strtolower(trim($type));
         switch ($type) {
             case 'organization':
             case 'org':
+            case 'group':
                 return 'Organization';
             case 'user':
+            case 'individual':
             default:
                 return 'User';
         }
@@ -500,7 +531,7 @@ class GitEmbedFeiCode {
                         
                         <div class="git-embed-title-content">
                             <h3 class="git-embed-title">
-                                <span class="dashicons dashicons-admin-links git-embed-repo-icon"></span>
+                                <span class="dashicons dashicons-embed-generic git-embed-repo-icon"></span>
                                 <a href="<?php echo esc_url($repo_data['html_url']); ?>" target="_blank" rel="noopener">
                                     <?php echo esc_html($repo_data['full_name']); ?>
                                 </a>
@@ -508,7 +539,9 @@ class GitEmbedFeiCode {
                             
                             <?php if ($show_avatar): ?>
                                 <div class="git-embed-owner-info">
-                                    <span class="git-embed-owner-type"><?php echo esc_html($repo_data['owner']['type']); ?></span>
+                                    <?php if (!empty($repo_data['owner']['type'])): ?>
+                                        <span class="git-embed-owner-type"><?php echo esc_html($repo_data['owner']['type']); ?></span>
+                                    <?php endif; ?>
                                     <a href="<?php echo esc_url($repo_data['owner']['html_url']); ?>" 
                                        target="_blank" rel="noopener" class="git-embed-owner-link">
                                         @<?php echo esc_html($repo_data['owner']['login']); ?>
@@ -534,7 +567,7 @@ class GitEmbedFeiCode {
                 
                 <?php if ($show_description && $repo_data['description']): ?>
                     <p class="git-embed-description">
-                        <span class="dashicons dashicons-text-page"></span>
+                        <span class="dashicons dashicons-editor-quote"></span>
                         <?php echo esc_html($repo_data['description']); ?>
                     </p>
                 <?php endif; ?>
@@ -547,7 +580,7 @@ class GitEmbedFeiCode {
                             <span class="git-embed-stat-value"><?php echo number_format_i18n($repo_data['stargazers_count']); ?></span>
                         </span>
                         <span class="git-embed-stat">
-                            <span class="dashicons dashicons-networking"></span>
+                            <span class="dashicons dashicons-share"></span>
                             <span class="git-embed-stat-label">Forks:</span>
                             <span class="git-embed-stat-value"><?php echo number_format_i18n($repo_data['forks_count']); ?></span>
                         </span>
@@ -652,16 +685,20 @@ class GitEmbedFeiCode {
     private function get_download_url(array $repo_data): string {
         $platform = $repo_data['platform'] ?? 'github';
         $archive_url = $repo_data['archive_url'] ?? '';
+        $default_branch = $repo_data['default_branch'] ?? 'main';
         
         switch ($platform) {
             case 'github':
                 $url = str_replace('{archive_format}', 'zipball', $archive_url);
-                return str_replace('{/ref}', '/main', $url);
+                return str_replace('{/ref}', "/{$default_branch}", $url);
                 
             case 'gitlab':
             case 'gitea':
             case 'forgejo':
             case 'custom':
+                if (strpos($archive_url, 'main.zip') !== false && $default_branch !== 'main') {
+                    return str_replace('main.zip', $default_branch . '.zip', $archive_url);
+                }
                 return $archive_url;
                 
             default:
@@ -704,6 +741,7 @@ class GitEmbedFeiCode {
         
         $platform = sanitize_text_field($_POST['platform'] ?? '');
         $custom_domain = sanitize_text_field($_POST['customDomain'] ?? '');
+        $custom_site_name = sanitize_text_field($_POST['customSiteName'] ?? '');
         $owner = sanitize_text_field($_POST['owner'] ?? '');
         $repo = sanitize_text_field($_POST['repo'] ?? '');
         
@@ -711,14 +749,19 @@ class GitEmbedFeiCode {
             wp_send_json_error('Repository information required');
         }
         
-        $this->clear_repository_cache($platform, $owner, $repo, $custom_domain);
+        $this->clear_repository_cache($platform, $owner, $repo, $custom_domain, $custom_site_name);
         
         wp_send_json_success('Cache cleared successfully');
     }
     
-    private function clear_repository_cache(string $platform, string $owner, string $repo, string $custom_domain = ''): void {
-        $cache_key = "git_embed_{$platform}_{$owner}_{$repo}" . ($custom_domain ? "_{$custom_domain}" : '');
+    private function clear_repository_cache(string $platform, string $owner, string $repo, string $custom_domain = '', string $custom_site_name = ''): void {
+        $cache_key = "git_embed_{$platform}_{$owner}_{$repo}" . ($custom_domain ? "_{$custom_domain}" : '') . ($custom_site_name ? "_{$custom_site_name}" : '');
         delete_transient($cache_key);
+        
+        if ($custom_domain) {
+            $site_cache_key = 'git_embed_site_name_' . md5($custom_domain);
+            delete_transient($site_cache_key);
+        }
         
         global $wpdb;
         $wpdb->query(

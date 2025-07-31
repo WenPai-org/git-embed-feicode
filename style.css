@@ -33,7 +33,7 @@
     background: #ffffff;
     border: 1px solid #d1d5da;
     border-radius: 8px;
-    padding: 20px;
+    padding: 30px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.15s ease-in-out;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -86,8 +86,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
     border-bottom: 1px solid #e1e4e8;
 }
 
@@ -98,7 +98,7 @@
 }
 
 .git-embed-site-name {
-    font-size: 12px;
+    font-size: 14px;
     color: #656d76;
     font-weight: 500;
 }
@@ -157,7 +157,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     flex-wrap: wrap;
     gap: 12px;
 }
@@ -176,7 +176,7 @@
 }
 
 .git-embed-avatar {
-    border-radius: 50%;
+    border-radius: 15%;
     flex-shrink: 0;
     border: 2px solid #e1e4e8;
 }
@@ -239,8 +239,7 @@
 }
 
 .git-embed-repo-icon {
-    color: #0073aa;
-    font-size: 16px;
+    font-size: 20px;
     margin-top: 2px;
     flex-shrink: 0;
 }
@@ -259,23 +258,25 @@
     background: #f6f8fa;
     border: 1px solid #d1d5da;
     border-radius: 12px;
-    padding: 4px 8px;
-    font-size: 12px;
+    padding: 1px 8px;
+    font-size: 11px;
     font-weight: 500;
     color: #656d76;
     white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 1px;
 }
 
 .git-embed-language .dashicons {
     font-size: 14px;
+    line-height: 1.25;
 }
 
 .git-embed-description {
     color: #656d76;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 400;
     line-height: 1.5;
     margin: 0 0 16px 0;
     display: flex;
@@ -286,13 +287,12 @@
 .git-embed-description .dashicons {
     margin-top: 2px;
     flex-shrink: 0;
-    color: #0073aa;
 }
 
 .git-embed-stats {
     display: flex;
     gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
 }
 
@@ -307,11 +307,11 @@
 
 .git-embed-stat .dashicons {
     font-size: 16px;
-    color: #0073aa;
+    line-height: 1.25;
 }
 
 .git-embed-stat-label {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .git-embed-stat-value {
@@ -342,6 +342,7 @@
 
 .git-embed-button .dashicons {
     font-size: 16px;
+line-height: 1.25;
 }
 
 .git-embed-button-primary {
@@ -631,6 +632,15 @@
 
 .git-embed-owner-type:empty {
     display: none;
+}
+
+.git-embed-owner-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    font-size: 12px;
+    flex-wrap: wrap;
 }
 
 .git-embed-custom-domain-notice {

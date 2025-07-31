@@ -208,8 +208,19 @@
                 const cardClass = `git-embed-card${cardStyle !== 'default' ? ` git-embed-card-${cardStyle}` : ''}`;
                 const avatarClass = `git-embed-avatar git-embed-avatar-${avatarSize}`;
                 const buttonClass = `git-embed-button-${buttonSize}`;
-                const downloadUrl = repoData.archive_url ? 
-                    repoData.archive_url.replace('{archive_format}', 'zipball').replace('{/ref}', '/main') : '';
+                
+                let downloadUrl = '';
+                if (repoData.archive_url) {
+                    const defaultBranch = repoData.default_branch || 'main';
+                    if (repoData.platform === 'github') {
+                        downloadUrl = repoData.archive_url.replace('{archive_format}', 'zipball').replace('{/ref}', `/${defaultBranch}`);
+                    } else {
+                        downloadUrl = repoData.archive_url;
+                        if (downloadUrl.includes('main.zip') && defaultBranch !== 'main') {
+                            downloadUrl = downloadUrl.replace('main.zip', `${defaultBranch}.zip`);
+                        }
+                    }
+                }
 
                 return el('div', { className: cardClass },
                     showSiteInfo && repoData.site_info && el('div', { 
@@ -247,7 +258,7 @@
                                     }, repoData.full_name)
                                 ),
                                 showAvatar && repoData.owner && el('div', { className: 'git-embed-owner-info' },
-                                    el('span', { className: 'git-embed-owner-type' }, repoData.owner.type),
+                                    repoData.owner.type && el('span', { className: 'git-embed-owner-type' }, repoData.owner.type),
                                     el('a', {
                                         href: repoData.owner.html_url,
                                         target: '_blank',
@@ -361,33 +372,43 @@
                                 { label: 'Custom Git Service', value: 'custom' }
                             ],
                             onChange: (value) => setAttributes({ platform: value }),
-                            help: platform !== 'github' ? 'Self-hosted Git service requires custom domain' : ''
+                            help: platform !== 'github' ? 'Self-hosted Git service requires custom domain' : '',
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         }),
                         (platform !== 'github') && el(TextControl, {
                             label: __('Custom Domain', 'git-embed-feicode'),
                             value: customDomain,
                             onChange: (value) => setAttributes({ customDomain: value }),
                             placeholder: 'e.g. git.example.com',
-                            help: `Enter the domain of your ${platform.charAt(0).toUpperCase() + platform.slice(1)} instance`
+                            help: `Enter the domain of your ${platform.charAt(0).toUpperCase() + platform.slice(1)} instance`,
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         }),
                         (platform !== 'github') && el(TextControl, {
                             label: __('Custom Site Name (Optional)', 'git-embed-feicode'),
                             value: customSiteName,
                             onChange: (value) => setAttributes({ customSiteName: value }),
                             placeholder: 'e.g. Company Git',
-                            help: 'Override the automatically detected site name'
+                            help: 'Override the automatically detected site name',
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         }),
                         el(TextControl, {
                             label: __('Repository Owner', 'git-embed-feicode'),
                             value: owner,
                             onChange: (value) => setAttributes({ owner: value }),
-                            placeholder: 'e.g. facebook'
+                            placeholder: 'e.g. facebook',
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         }),
                         el(TextControl, {
                             label: __('Repository Name', 'git-embed-feicode'),
                             value: repo,
                             onChange: (value) => setAttributes({ repo: value }),
-                            placeholder: 'e.g. react'
+                            placeholder: 'e.g. react',
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         }),
                         el(Button, {
                             isPrimary: true,
@@ -418,7 +439,9 @@
                                 { label: 'Medium', value: 'medium' },
                                 { label: 'Large', value: 'large' }
                             ],
-                            onChange: (value) => setAttributes({ avatarSize: value })
+                            onChange: (value) => setAttributes({ avatarSize: value }),
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         }),
                         el(ToggleControl, {
                             label: __('Show Description', 'git-embed-feicode'),
@@ -486,7 +509,9 @@
                                 { label: 'Ghost', value: 'ghost' }
                             ],
                             onChange: (value) => setAttributes({ buttonStyle: value }),
-                            disabled: !showActions
+                            disabled: !showActions,
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         }),
                         el(SelectControl, {
                             label: __('Button Size', 'git-embed-feicode'),
@@ -497,7 +522,9 @@
                                 { label: 'Large', value: 'large' }
                             ],
                             onChange: (value) => setAttributes({ buttonSize: value }),
-                            disabled: !showActions
+                            disabled: !showActions,
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         })
                     ),
                     el(PanelBody, {
@@ -515,7 +542,9 @@
                                 { label: 'Gradient', value: 'gradient' },
                                 { label: 'Glassmorphism', value: 'glass' }
                             ],
-                            onChange: (value) => setAttributes({ cardStyle: value })
+                            onChange: (value) => setAttributes({ cardStyle: value }),
+                            __next40pxDefaultSize: true,
+                            __nextHasNoMarginBottom: true
                         })
                     )
                 ),
