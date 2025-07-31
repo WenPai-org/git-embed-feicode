@@ -180,6 +180,17 @@
                 }
             }, [owner, repo, platform, customDomain, customSiteName]);
 
+            // 获取显示用的头像 URL（优先仓库头像）
+            const getDisplayAvatarUrl = (repoData) => {
+                if (repoData.repo_avatar_url) {
+                    return repoData.repo_avatar_url;
+                }
+                if (repoData.owner && repoData.owner.avatar_url) {
+                    return repoData.owner.avatar_url;
+                }
+                return '';
+            };
+
             const renderPreview = () => {
                 if (loading) {
                     return el('div', { className: 'git-embed-loading' },
@@ -209,18 +220,11 @@
                 const avatarClass = `git-embed-avatar git-embed-avatar-${avatarSize}`;
                 const buttonClass = `git-embed-button-${buttonSize}`;
                 
-                let downloadUrl = '';
-                if (repoData.archive_url) {
-                    const defaultBranch = repoData.default_branch || 'main';
-                    if (repoData.platform === 'github') {
-                        downloadUrl = repoData.archive_url.replace('{archive_format}', 'zipball').replace('{/ref}', `/${defaultBranch}`);
-                    } else {
-                        downloadUrl = repoData.archive_url;
-                        if (downloadUrl.includes('main.zip') && defaultBranch !== 'main') {
-                            downloadUrl = downloadUrl.replace('main.zip', `${defaultBranch}.zip`);
-                        }
-                    }
-                }
+                // 使用简化的下载地址
+                const downloadUrl = repoData.archive_url || '';
+                
+                // 获取显示头像
+                const displayAvatarUrl = getDisplayAvatarUrl(repoData);
 
                 return el('div', { className: cardClass },
                     showSiteInfo && repoData.site_info && el('div', { 
@@ -243,10 +247,11 @@
                     
                     el('div', { className: 'git-embed-header' },
                         el('div', { className: 'git-embed-title-section' },
-                            showAvatar && repoData.owner && el('img', {
-                                src: repoData.owner.avatar_url,
-                                alt: repoData.owner.login,
-                                className: avatarClass
+                            showAvatar && displayAvatarUrl && el('img', {
+                                src: displayAvatarUrl,
+                                alt: repoData.name,
+                                className: avatarClass,
+                                title: repoData.repo_avatar_url ? 'Repository Avatar' : 'Owner Avatar'
                             }),
                             el('div', { className: 'git-embed-title-content' },
                                 el('h3', { className: 'git-embed-title' },
@@ -264,7 +269,13 @@
                                         target: '_blank',
                                         rel: 'noopener',
                                         className: 'git-embed-owner-link'
-                                    }, `@${repoData.owner.login}`)
+                                    }, `@${repoData.owner.login}`),
+                                    repoData.repo_avatar_url && el('span', { 
+                                        className: 'git-embed-repo-avatar-badge',
+                                        title: 'Repository has custom avatar'
+                                    },
+                                        el('span', { className: 'dashicons dashicons-format-image' })
+                                    )
                                 )
                             )
                         ),
@@ -319,10 +330,10 @@
                                 el('span', { className: 'dashicons dashicons-admin-page' }),
                                 'Clone'
                             ),
-                            showDownloadButton && el('a', {
+                            showDownloadButton && downloadUrl && el('a', {
                                 href: downloadUrl,
                                 className: `git-embed-button git-embed-button-secondary ${buttonClass}`,
-                                download: `${repoData.name}.zip`
+                                download: `${repoData.name}-${repoData.default_branch || 'main'}.zip`
                             }, 
                                 el('span', { className: 'dashicons dashicons-download' }),
                                 'Download ZIP'
@@ -427,9 +438,10 @@
                             onChange: (value) => setAttributes({ showSiteInfo: value })
                         }),
                         el(ToggleControl, {
-                            label: __('Show Owner Avatar', 'git-embed-feicode'),
+                            label: __('Show Avatar', 'git-embed-feicode'),
                             checked: showAvatar,
-                            onChange: (value) => setAttributes({ showAvatar: value })
+                            onChange: (value) => setAttributes({ showAvatar: value }),
+                            help: 'Shows repository avatar if available, otherwise owner avatar'
                         }),
                         showAvatar && el(SelectControl, {
                             label: __('Avatar Size', 'git-embed-feicode'),

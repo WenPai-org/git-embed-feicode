@@ -1,0 +1,296 @@
+# Copyright (C) 2024 feiCode
+# This file is distributed under the same license as the Git Embed for feiCode plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Git Embed for feiCode 1.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/git-embed-feicode\n"
+"POT-Creation-Date: 2024-12-31 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: WordPress POT Generator\n"
+
+#. Plugin Name of the plugin/theme
+msgid "Git Embed for feiCode"
+msgstr ""
+
+#. Plugin Description of the plugin/theme
+msgid "Embed Git repositories from GitHub/Gitlab/Gitea/Forgejo and Self-hosted Git service with beautiful cards
+
+"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "feiCode"
+msgstr ""
+
+#: block.js:15
+msgid "Git Repository"
+msgstr ""
+
+#: block.js:16
+msgid "Embed a Git repository with information and stats"
+msgstr ""
+
+#: block.js:170
+msgid "Repository Settings"
+msgstr ""
+
+#: block.js:174
+msgid "Platform"
+msgstr ""
+
+#: block.js:185
+msgid "Custom Domain"
+msgstr ""
+
+#: block.js:195
+msgid "Custom Site Name (Optional)"
+msgstr ""
+
+#: block.js:205
+msgid "Repository Owner"
+msgstr ""
+
+#: block.js:214
+msgid "Repository Name"
+msgstr ""
+
+#: block.js:227
+msgid "Display Options"
+msgstr ""
+
+#: block.js:231
+msgid "Show Site Information"
+msgstr ""
+
+#: block.js:235
+msgid "Show Avatar"
+msgstr ""
+
+#: block.js:240
+msgid "Avatar Size"
+msgstr ""
+
+#: block.js:252
+msgid "Show Description"
+msgstr ""
+
+#: block.js:256
+msgid "Show Programming Language"
+msgstr ""
+
+#: block.js:260
+msgid "Show Statistics"
+msgstr ""
+
+#: block.js:264
+msgid "Show Action Buttons"
+msgstr ""
+
+#: block.js:269
+msgid "Button Options"
+msgstr ""
+
+#: block.js:273
+msgid "Show View Repository Button"
+msgstr ""
+
+#: block.js:278
+msgid "Show Clone Button"
+msgstr ""
+
+#: block.js:283
+msgid "Show Download ZIP Button"
+msgstr ""
+
+#: block.js:288
+msgid "Show Issues Button"
+msgstr ""
+
+#: block.js:293
+msgid "Show Forks Button"
+msgstr ""
+
+#: block.js:298
+msgid "Button Style"
+msgstr ""
+
+#: block.js:312
+msgid "Button Size"
+msgstr ""
+
+#: block.js:326
+msgid "Style Options"
+msgstr ""
+
+#: block.js:330
+msgid "Card Style"
+msgstr ""
+
+#: git-embed-feicode.php:85
+msgid "Repository information required"
+msgstr ""
+
+#: git-embed-feicode.php:89
+msgid "Custom domain required for %s"
+msgstr ""
+
+#: git-embed-feicode.php:95
+msgid "Failed to fetch repository data"
+msgstr ""
+
+#: git-embed-feicode.php:672
+msgid "Insufficient permissions"
+msgstr ""
+
+#: git-embed-feicode.php:684
+msgid "Cache cleared successfully"
+msgstr ""
+
+#. Error messages
+msgid "Please enter repository owner and name"
+msgstr ""
+
+#, javascript-format
+msgid "Please enter custom domain for %s"
+msgstr ""
+
+msgid "Fetching repository data..."
+msgstr ""
+
+msgid "Failed to fetch repository"
+msgstr ""
+
+msgid "Network error occurred"
+msgstr ""
+
+msgid "Configure your repository details in the sidebar"
+msgstr ""
+
+msgid "Fetch Repository"
+msgstr ""
+
+msgid "Fetching..."
+msgstr ""
+
+#. Help texts
+msgid "Self-hosted Git service requires custom domain"
+msgstr ""
+
+#, javascript-format
+msgid "Enter the domain of your %s instance"
+msgstr ""
+
+msgid "Override the automatically detected site name"
+msgstr ""
+
+msgid "Shows repository avatar if available, otherwise owner avatar"
+msgstr ""
+
+#. Button labels
+msgid "View Repository"
+msgstr ""
+
+msgid "Clone"
+msgstr ""
+
+msgid "Download ZIP"
+msgstr ""
+
+msgid "Issues"
+msgstr ""
+
+msgid "Forks"
+msgstr ""
+
+msgid "Copied!"
+msgstr ""
+
+#. Stats labels
+msgid "Stars:"
+msgstr ""
+
+msgid "Forks:"
+msgstr ""
+
+msgid "Issues:"
+msgstr ""
+
+#. Options
+msgid "GitHub"
+msgstr ""
+
+msgid "Gitea"
+msgstr ""
+
+msgid "Forgejo"
+msgstr ""
+
+msgid "GitLab (Self-hosted)"
+msgstr ""
+
+msgid "Custom Git Service"
+msgstr ""
+
+msgid "Small"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "Large"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Primary (Green)"
+msgstr ""
+
+msgid "Secondary (Gray)"
+msgstr ""
+
+msgid "Outline"
+msgstr ""
+
+msgid "Ghost"
+msgstr ""
+
+msgid "Minimal"
+msgstr ""
+
+msgid "Bordered"
+msgstr ""
+
+msgid "Shadow"
+msgstr ""
+
+msgid "Gradient"
+msgstr ""
+
+msgid "Glassmorphism"
+msgstr ""
+
+#. Tooltips and titles
+msgid "Click to copy clone URL"
+msgstr ""
+
+msgid "Repository Avatar"
+msgstr ""
+
+msgid "Owner Avatar"
+msgstr ""
+
+msgid "Repository has custom avatar"
+msgstr ""
+
+#. Owner types
+msgid "Organization"
+msgstr ""
+
+msgid "User"
+msgstr ""
