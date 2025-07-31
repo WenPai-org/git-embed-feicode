@@ -1,0 +1,275 @@
+.wp-block-git-embed-feicode-repository {
+    margin: 1.5em 0;
+    max-width: 100%;
+}
+
+.wp-block-git-embed-feicode-repository.alignleft {
+    float: left;
+    margin-right: 1.5em;
+    max-width: 360px;
+}
+
+.wp-block-git-embed-feicode-repository.alignright {
+    float: right;
+    margin-left: 1.5em;
+    max-width: 360px;
+}
+
+.wp-block-git-embed-feicode-repository.aligncenter {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+}
+
+.wp-block-git-embed-feicode-repository.alignwide {
+    max-width: 800px;
+}
+
+.wp-block-git-embed-feicode-repository.alignfull {
+    max-width: none;
+}
+
+.git-embed-card {
+    background: #ffffff;
+    border: 1px solid #d1d5da;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.15s ease-in-out;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.git-embed-card:hover {
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.git-embed-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.git-embed-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    flex: 1;
+    min-width: 0;
+}
+
+.git-embed-title a {
+    color: #0969da;
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.git-embed-title a:hover {
+    text-decoration: underline;
+}
+
+.git-embed-language {
+    background: #f6f8fa;
+    border: 1px solid #d1d5da;
+    border-radius: 12px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #656d76;
+    white-space: nowrap;
+}
+
+.git-embed-description {
+    color: #656d76;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+}
+
+.git-embed-stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.git-embed-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #656d76;
+    font-weight: 500;
+}
+
+.git-embed-icon {
+    font-size: 14px;
+}
+
+.git-embed-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.git-embed-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid;
+    transition: all 0.15s ease-in-out;
+}
+
+.git-embed-button-primary {
+    color: #ffffff;
+    background-color: #2da44e;
+    border-color: #2da44e;
+}
+
+.git-embed-button-primary:hover {
+    background-color: #2c974b;
+    border-color: #2c974b;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.git-embed-button-secondary {
+    color: #24292f;
+    background-color: #f6f8fa;
+    border-color: #d1d5da;
+}
+
+.git-embed-button-secondary:hover {
+    background-color: #f3f4f6;
+    border-color: #c7ccd1;
+    color: #24292f;
+    text-decoration: none;
+}
+
+.git-embed-placeholder {
+    border: 2px dashed #c3c4c7;
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    background: #f9f9f9;
+}
+
+.git-embed-placeholder-content {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.git-embed-placeholder-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.git-embed-placeholder h3 {
+    margin: 0 0 8px 0;
+    color: #1e1e1e;
+    font-size: 18px;
+}
+
+.git-embed-placeholder p {
+    margin: 0;
+    color: #757575;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.git-embed-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.git-embed-loading p {
+    margin: 16px 0 0 0;
+    color: #757575;
+    font-size: 14px;
+}
+
+.git-embed-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: 1px solid #f1aeb5;
+    font-size: 14px;
+    margin: 16px 0;
+}
+
+@media (max-width: 768px) {
+    .git-embed-card {
+        padding: 16px;
+    }
+    
+    .git-embed-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .git-embed-stats {
+        gap: 12px;
+    }
+    
+    .git-embed-actions {
+        width: 100%;
+    }
+    
+    .git-embed-button {
+        flex: 1;
+        justify-content: center;
+        min-width: 0;
+    }
+    
+    .wp-block-git-embed-feicode-repository.alignleft,
+    .wp-block-git-embed-feicode-repository.alignright {
+        float: none;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .git-embed-title {
+        font-size: 16px;
+    }
+    
+    .git-embed-actions {
+        flex-direction: column;
+    }
+    
+    .git-embed-stats {
+        justify-content: space-between;
+    }
+}
+
+.wp-block[data-type="git-embed-feicode/repository"] {
+    position: relative;
+}
+
+.wp-block[data-type="git-embed-feicode/repository"]:not(.is-selected) .git-embed-card {
+    pointer-events: none;
+}
+
+.wp-block[data-type="git-embed-feicode/repository"].is-selected .git-embed-card {
+    box-shadow: 0 0 0 2px #007cba;
+}
