@@ -67,6 +67,18 @@
                 type: 'boolean',
                 default: true
             },
+            showAvatar: {
+                type: 'boolean',
+                default: true
+            },
+            showSiteInfo: {
+                type: 'boolean',
+                default: true
+            },
+            avatarSize: {
+                type: 'string',
+                default: 'medium'
+            },
             cardStyle: {
                 type: 'string',
                 default: 'default'
@@ -86,7 +98,7 @@
             const { 
                 platform, owner, repo, showDescription, showStats, showLanguage,
                 showActions, showViewButton, showCloneButton, showDownloadButton,
-                cardStyle, buttonStyle, alignment 
+                showAvatar, showSiteInfo, avatarSize, cardStyle, buttonStyle, alignment 
             } = attributes;
             
             const [repoData, setRepoData] = useState(null);
@@ -167,24 +179,59 @@
                 }
 
                 const cardClass = `git-embed-card${cardStyle !== 'default' ? ` git-embed-card-${cardStyle}` : ''}`;
+                const avatarClass = `git-embed-avatar git-embed-avatar-${avatarSize}`;
                 const downloadUrl = repoData.archive_url ? 
                     repoData.archive_url.replace('{archive_format}', 'zipball').replace('{/ref}', '/main') : '';
 
                 return el('div', { className: cardClass },
-                    el('div', { className: 'git-embed-header' },
-                        el('h3', { className: 'git-embed-title' },
-                            el('span', { className: 'dashicons dashicons-admin-links git-embed-repo-icon' }),
+                    showSiteInfo && repoData.site_info && el('div', { className: 'git-embed-site-info' },
+                        el('img', {
+                            src: repoData.site_info.favicon,
+                            alt: repoData.site_info.name,
+                            className: 'git-embed-site-favicon'
+                        }),
+                        el('span', { className: 'git-embed-site-name' },
                             el('a', {
-                                href: repoData.html_url,
+                                href: repoData.site_info.url,
                                 target: '_blank',
                                 rel: 'noopener'
-                            }, repoData.full_name)
+                            }, repoData.site_info.name)
+                        )
+                    ),
+                    
+                    el('div', { className: 'git-embed-header' },
+                        el('div', { className: 'git-embed-title-section' },
+                            showAvatar && repoData.owner && el('img', {
+                                src: repoData.owner.avatar_url,
+                                alt: repoData.owner.login,
+                                className: avatarClass
+                            }),
+                            el('div', { className: 'git-embed-title-content' },
+                                el('h3', { className: 'git-embed-title' },
+                                    el('span', { className: 'dashicons dashicons-admin-links git-embed-repo-icon' }),
+                                    el('a', {
+                                        href: repoData.html_url,
+                                        target: '_blank',
+                                        rel: 'noopener'
+                                    }, repoData.full_name)
+                                ),
+                                showAvatar && repoData.owner && el('div', { className: 'git-embed-owner-info' },
+                                    el('span', { className: 'git-embed-owner-type' }, repoData.owner.type),
+                                    el('a', {
+                                        href: repoData.owner.html_url,
+                                        target: '_blank',
+                                        rel: 'noopener',
+                                        className: 'git-embed-owner-link'
+                                    }, `@${repoData.owner.login}`)
+                                )
+                            )
                         ),
                         showLanguage && repoData.language && el('span', { className: 'git-embed-language' },
                             el('span', { className: 'dashicons dashicons-editor-code' }),
                             repoData.language
                         )
                     ),
+                    
                     showDescription && repoData.description &&
                         el('p', { className: 'git-embed-description' },
                             el('span', { className: 'dashicons dashicons-text-page' }),
@@ -279,6 +326,26 @@
                         title: __('Display Options', 'git-embed-feicode'),
                         initialOpen: false
                     },
+                        el(ToggleControl, {
+                            label: __('Show Site Information', 'git-embed-feicode'),
+                            checked: showSiteInfo,
+                            onChange: (value) => setAttributes({ showSiteInfo: value })
+                        }),
+                        el(ToggleControl, {
+                            label: __('Show Owner Avatar', 'git-embed-feicode'),
+                            checked: showAvatar,
+                            onChange: (value) => setAttributes({ showAvatar: value })
+                        }),
+                        showAvatar && el(SelectControl, {
+                            label: __('Avatar Size', 'git-embed-feicode'),
+                            value: avatarSize,
+                            options: [
+                                { label: 'Small', value: 'small' },
+                                { label: 'Medium', value: 'medium' },
+                                { label: 'Large', value: 'large' }
+                            ],
+                            onChange: (value) => setAttributes({ avatarSize: value })
+                        }),
                         el(ToggleControl, {
                             label: __('Show Description', 'git-embed-feicode'),
                             checked: showDescription,

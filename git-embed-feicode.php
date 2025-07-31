@@ -23,6 +23,8 @@ class GitEmbedFeiCode {
         add_action('init', [$this, 'init']);
         add_action('wp_ajax_git_embed_fetch', [$this, 'ajax_fetch_repo']);
         add_action('wp_ajax_nopriv_git_embed_fetch', [$this, 'ajax_fetch_repo']);
+        add_action('wp_ajax_git_embed_clear_cache', [$this, 'ajax_clear_cache']);
+        register_deactivation_hook(__FILE__, [$this, 'clear_all_cache']);
     }
     
     public function init(): void {
@@ -85,6 +87,18 @@ class GitEmbedFeiCode {
                     'type' => 'string',
                     'default' => 'primary'
                 ],
+                'showAvatar' => [
+                    'type' => 'boolean',
+                    'default' => true
+                ],
+                'showSiteInfo' => [
+                    'type' => 'boolean',
+                    'default' => true
+                ],
+                'avatarSize' => [
+                    'type' => 'string',
+                    'default' => 'medium'
+                ],
                 'alignment' => [
                     'type' => 'string',
                     'default' => 'none'
@@ -108,7 +122,8 @@ class GitEmbedFeiCode {
         
         wp_localize_script('git-embed-feicode-editor', 'gitEmbedAjax', [
             'url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('git_embed_nonce')
+            'nonce' => wp_create_nonce('git_embed_nonce'),
+            'cache_nonce' => wp_create_nonce('git_embed_cache_nonce')
         ]);
     }
     
@@ -144,9 +159,10 @@ class GitEmbedFeiCode {
         
         $url = "https://api.github.com/repos/{$owner}/{$repo}";
         $response = wp_remote_get($url, [
-            'timeout' => 10,
+            'timeout' => 15,
             'headers' => [
-                'User-Agent' => 'Git-Embed-FeiCode/1.0'
+                'User-Agent' => 'Git-Embed-FeiCode/1.0',
+                'Accept' => 'application/vnd.github.v3+json'
             ]
         ]);
         
@@ -170,12 +186,49 @@ class GitEmbedFeiCode {
             'forks_count' => $data['forks_count'],
             'open_issues_count' => $data['open_issues_count'],
             'clone_url' => $data['clone_url'],
-            'archive_url' => $data['archive_url']
+            'archive_url' => $data['archive_url'],
+            'owner' => [
+                'login' => $data['owner']['login'],
+                'avatar_url' => $data['owner']['avatar_url'],
+                'html_url' => $data['owner']['html_url'],
+                'type' => $data['owner']['type']
+            ],
+            'site_info' => [
+                'name' => 'GitHub',
+                'url' => 'https://github.com',
+                'favicon' => 'https://github.com/favicon.ico',
+                'color' => '#24292f'
+            ]
         ];
         
-        set_transient($cache_key, $repo_data, HOUR_IN_SECONDS);
+        set_transient($cache_key, $repo_data, DAY_IN_SECONDS);
+        
+        $this->cache_avatar($repo_data['owner']['avatar_url']);
         
         return $repo_data;
+    }
+    
+    private function cache_avatar(string $avatar_url): void {
+        if (empty($avatar_url)) {
+            return;
+        }
+        
+        $cache_key = 'git_embed_avatar_' . md5($avatar_url);
+        
+        if (get_transient($cache_key) !== false) {
+            return;
+        }
+        
+        $response = wp_remote_get($avatar_url, [
+            'timeout' => 10,
+            'headers' => [
+                'User-Agent' => 'Git-Embed-FeiCode/1.0'
+            ]
+        ]);
+        
+        if (!is_wp_error($response) && wp_remote_retrieve_response_code($response) === 200) {
+            set_transient($cache_key, true, WEEK_IN_SECONDS);
+        }
     }
     
     private function render_repository_card(array $repo_data, array $attributes): string {
@@ -186,12 +239,16 @@ class GitEmbedFeiCode {
         $show_view_button = $attributes['showViewButton'] ?? true;
         $show_clone_button = $attributes['showCloneButton'] ?? true;
         $show_download_button = $attributes['showDownloadButton'] ?? true;
+        $show_avatar = $attributes['showAvatar'] ?? true;
+        $show_site_info = $attributes['showSiteInfo'] ?? true;
+        $avatar_size = $attributes['avatarSize'] ?? 'medium';
         $card_style = $attributes['cardStyle'] ?? 'default';
         $button_style = $attributes['buttonStyle'] ?? 'primary';
         $alignment = $attributes['alignment'] ?? 'none';
         
         $align_class = $alignment !== 'none' ? " align{$alignment}" : '';
         $card_class = $card_style !== 'default' ? " git-embed-card-{$card_style}" : '';
+        $avatar_class = "git-embed-avatar-{$avatar_size}";
         
         $download_url = str_replace('{archive_format}', 'zipball', $repo_data['archive_url']);
         $download_url = str_replace('{/ref}', '/main', $download_url);
@@ -200,13 +257,50 @@ class GitEmbedFeiCode {
         ?>
         <div class="wp-block-git-embed-feicode-repository<?php echo esc_attr($align_class); ?>">
             <div class="git-embed-card<?php echo esc_attr($card_class); ?>">
+                <?php if ($show_site_info): ?>
+                    <div class="git-embed-site-info">
+                        <img src="<?php echo esc_url($repo_data['site_info']['favicon']); ?>" 
+                             alt="<?php echo esc_attr($repo_data['site_info']['name']); ?>" 
+                             class="git-embed-site-favicon"
+                             loading="lazy">
+                        <span class="git-embed-site-name">
+                            <a href="<?php echo esc_url($repo_data['site_info']['url']); ?>" 
+                               target="_blank" rel="noopener">
+                                <?php echo esc_html($repo_data['site_info']['name']); ?>
+                            </a>
+                        </span>
+                    </div>
+                <?php endif; ?>
+                
                 <div class="git-embed-header">
-                    <h3 class="git-embed-title">
-                        <span class="dashicons dashicons-admin-links git-embed-repo-icon"></span>
-                        <a href="<?php echo esc_url($repo_data['html_url']); ?>" target="_blank" rel="noopener">
-                            <?php echo esc_html($repo_data['full_name']); ?>
-                        </a>
-                    </h3>
+                    <div class="git-embed-title-section">
+                        <?php if ($show_avatar): ?>
+                            <img src="<?php echo esc_url($repo_data['owner']['avatar_url']); ?>" 
+                                 alt="<?php echo esc_attr($repo_data['owner']['login']); ?>" 
+                                 class="git-embed-avatar <?php echo esc_attr($avatar_class); ?>"
+                                 loading="lazy">
+                        <?php endif; ?>
+                        
+                        <div class="git-embed-title-content">
+                            <h3 class="git-embed-title">
+                                <span class="dashicons dashicons-admin-links git-embed-repo-icon"></span>
+                                <a href="<?php echo esc_url($repo_data['html_url']); ?>" target="_blank" rel="noopener">
+                                    <?php echo esc_html($repo_data['full_name']); ?>
+                                </a>
+                            </h3>
+                            
+                            <?php if ($show_avatar): ?>
+                                <div class="git-embed-owner-info">
+                                    <span class="git-embed-owner-type"><?php echo esc_html($repo_data['owner']['type']); ?></span>
+                                    <a href="<?php echo esc_url($repo_data['owner']['html_url']); ?>" 
+                                       target="_blank" rel="noopener" class="git-embed-owner-link">
+                                        @<?php echo esc_html($repo_data['owner']['login']); ?>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    
                     <?php if ($show_language && $repo_data['language']): ?>
                         <span class="git-embed-language">
                             <span class="dashicons dashicons-editor-code"></span>
@@ -332,6 +426,61 @@ class GitEmbedFeiCode {
         }
         
         wp_send_json_success($repo_data);
+    }
+    
+    public function ajax_clear_cache(): void {
+        check_ajax_referer('git_embed_cache_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Insufficient permissions');
+        }
+        
+        $platform = sanitize_text_field($_POST['platform'] ?? '');
+        $owner = sanitize_text_field($_POST['owner'] ?? '');
+        $repo = sanitize_text_field($_POST['repo'] ?? '');
+        
+        if (empty($owner) || empty($repo)) {
+            wp_send_json_error('Repository information required');
+        }
+        
+        $this->clear_repository_cache($platform, $owner, $repo);
+        
+        wp_send_json_success('Cache cleared successfully');
+    }
+    
+    private function clear_repository_cache(string $platform, string $owner, string $repo): void {
+        $cache_key = "git_embed_{$platform}_{$owner}_{$repo}";
+        delete_transient($cache_key);
+        
+        global $wpdb;
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                $wpdb->esc_like('_transient_git_embed_avatar_') . '%'
+            )
+        );
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                $wpdb->esc_like('_transient_timeout_git_embed_avatar_') . '%'
+            )
+        );
+    }
+    
+    public function clear_all_cache(): void {
+        global $wpdb;
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                $wpdb->esc_like('_transient_git_embed_') . '%'
+            )
+        );
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                $wpdb->esc_like('_transient_timeout_git_embed_') . '%'
+            )
+        );
     }
     
     private function load_textdomain(): void {
