@@ -4,8 +4,6 @@ declare(strict_types=1);
 /**
  * Plugin Name: Git Embed for feiCode
  * Description: Embed Git repositories from GitHub/Gitlab/Gitea/Forgejo and Self-hosted Git service with beautiful cards
-
-
  * Version: 1.0.1
  * Author: feiCode
  * Author URI: https://cn.feicode.com
@@ -831,7 +829,6 @@ class GitEmbedFeiCode
                                                   "Repository has custom avatar",
                                                   self::TEXT_DOMAIN,
                                               ); ?>">
-                                            <span class="dashicons dashicons-format-image"></span>
                                         </span>
                                     <?php endif; ?>
                                 </div>
