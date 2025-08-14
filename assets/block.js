@@ -21,7 +21,7 @@
     registerBlockType('git-embed-feicode/repository', {
         title: __('Git Repository', 'git-embed-feicode'),
         description: __('Embed a Git repository with information and stats', 'git-embed-feicode'),
-        icon: 'admin-links',
+        icon: 'embed-generic',
         category: 'embed',
         supports: {
             align: ['left', 'center', 'right', 'wide', 'full']
@@ -212,7 +212,7 @@
                 if (!repoData) {
                     return el('div', { className: 'git-embed-placeholder' },
                         el('div', { className: 'git-embed-placeholder-content' },
-                            el('span', { className: 'dashicons dashicons-admin-links git-embed-placeholder-icon' }),
+                            el('span', { className: 'dashicons dashicons-embed-generic git-embed-placeholder-icon' }),
                             el('h3', null, __('Git Repository Embed', 'git-embed-feicode')),
                             el('p', null, __('Configure your repository details in the sidebar', 'git-embed-feicode'))
                         )
@@ -261,7 +261,7 @@
                             }),
                             el('div', { className: 'git-embed-title-content' },
                                 el('h3', { className: 'git-embed-title' },
-                                    el('span', { className: 'dashicons dashicons-admin-links git-embed-repo-icon' }),
+                                    el('span', { className: 'dashicons dashicons-embed-generic git-embed-repo-icon' }),
                                     el('a', {
                                         href: repoData.html_url,
                                         target: '_blank',

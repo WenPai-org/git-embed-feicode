@@ -454,9 +454,8 @@ line-height: 1.25;
 
 .git-embed-placeholder-icon {
     font-size: 48px;
-    display: block;
+    display: contents;
     margin-bottom: 16px;
-    color: #0073aa;
 }
 
 .git-embed-placeholder h3 {

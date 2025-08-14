@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Plugin Name: Git Embed for feiCode
  * Description: Embed Git repositories from GitHub/Gitlab/Gitea/Forgejo and Self-hosted Git service with beautiful cards
- * Version: 1.0.2
+ * Version: 1.1.0
  * Author: feiCode
  * Author URI: https://feicode.com
  * Text Domain: git-embed-feicode
@@ -22,7 +22,7 @@ if (!defined("ABSPATH")) {
 
 class GitEmbedFeiCode
 {
-    private const PLUGIN_VERSION = "1.0.2";
+    private const PLUGIN_VERSION = "1.1.0";
     private const BLOCK_NAME = "git-embed-feicode/repository";
     private const TEXT_DOMAIN = "git-embed-feicode";
 
@@ -41,6 +41,7 @@ class GitEmbedFeiCode
         register_deactivation_hook(__FILE__, [$this, "clear_all_cache"]);
 
         add_action("plugins_loaded", [$this, "load_textdomain"]);
+        add_action("wp_enqueue_scripts", [$this, "dashicons_style_front_end"]);
     }
 
     public function init(): void
@@ -55,6 +56,11 @@ class GitEmbedFeiCode
             false,
             dirname(plugin_basename(__FILE__)) . "/languages",
         );
+    }
+
+    public function dashicons_style_front_end(): void
+    {
+        wp_enqueue_style('dashicons');
     }
 
     private function register_block(): void
@@ -521,7 +527,7 @@ class GitEmbedFeiCode
                     "site_info" => [
                         "name" => "GitHub",
                         "url" => "https://github.com",
-                        "favicon" => "https://github.com/favicon.ico",
+                        "favicon" => "https://cn.cravatar.com/favicon/api/index.php?url=github.com",
                         "color" => "#24292f",
                     ],
                 ];
@@ -538,7 +544,7 @@ class GitEmbedFeiCode
                     "site_info" => [
                         "name" => $site_name,
                         "url" => "https://{$domain}",
-                        "favicon" => "https://{$domain}/assets/img/favicon.png",
+                        "favicon" => "https://cn.cravatar.com/favicon/api/index.php?url={$domain}",
                         "color" => "#609926",
                     ],
                 ];
@@ -555,7 +561,7 @@ class GitEmbedFeiCode
                     "site_info" => [
                         "name" => $site_name,
                         "url" => "https://{$domain}",
-                        "favicon" => "https://{$domain}/assets/img/favicon.png",
+                        "favicon" => "https://cn.cravatar.com/favicon/api/index.php?url={$domain}",
                         "color" => "#fb923c",
                     ],
                 ];
@@ -572,7 +578,7 @@ class GitEmbedFeiCode
                     "site_info" => [
                         "name" => $site_name,
                         "url" => "https://{$domain}",
-                        "favicon" => "https://{$domain}/assets/favicon.ico",
+                        "favicon" => "https://cn.cravatar.com/favicon/api/index.php?url={$domain}",
                         "color" => "#fc6d26",
                     ],
                 ];
@@ -589,7 +595,7 @@ class GitEmbedFeiCode
                     "site_info" => [
                         "name" => $site_name,
                         "url" => "https://{$domain}",
-                        "favicon" => "https://{$domain}/favicon.ico",
+                        "favicon" => "https://cn.cravatar.com/favicon/api/index.php?url={$domain}",
                         "color" => "#6366f1",
                     ],
                 ];
@@ -685,7 +691,7 @@ class GitEmbedFeiCode
                 "login" => $data["owner"]["login"],
                 "avatar_url" => $data["owner"]["avatar_url"],
                 "html_url" => $data["owner"]["html_url"] ?? ($base_url . "/" . $data["owner"]["login"]),
-                "type" => $this->normalize_owner_type($data["owner"]["type"] ?? "user"),
+                "type" => $this->normalize_owner_type($this->detect_owner_type($data["owner"], $platform)),
             ],
             "site_info" => $api_config["site_info"],
             "platform" => $platform,
@@ -699,12 +705,30 @@ class GitEmbedFeiCode
             case "organization":
             case "org":
             case "group":
+            case "team":
                 return __("Organization", self::TEXT_DOMAIN);
             case "user":
             case "individual":
+            case "person":
             default:
                 return __("User", self::TEXT_DOMAIN);
         }
+    }
+
+    private function detect_owner_type(array $owner_data, string $platform = ""): string
+    {
+        // 如果有明确的 type 字段，直接使用
+        if (isset($owner_data["type"]) && !empty($owner_data["type"])) {
+            return $owner_data["type"];
+        }
+        
+        // 对于 Gitea/Forgejo 等平台，默认显示为组织
+        if (in_array($platform, ["gitea", "forgejo", "custom"])) {
+            return "organization";
+        }
+        
+        // 默认为用户
+        return "user";
     }
 
     private function cache_avatar(string $avatar_url): void
