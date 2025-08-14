@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Git Embed for feiCode\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-31 16:41+0000\n"
+"POT-Creation-Date: 2025-08-14 01:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -12,14 +12,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.0; wp-6.8.2; php-8.3.0-dev\n"
+"X-Generator: Custom PHP Script\n"
 "X-Domain: git-embed-feicode"
 
 #. Description of the plugin
-msgid ""
-"Embed Git repositories from GitHub/Gitlab/Gitea/Forgejo and Self-hosted Git "
-"service with beautiful cards"
+msgid "Embed Git repositories from GitHub/Gitlab/Gitea/Forgejo and Self-hosted Git service with beautiful cards"
 msgstr ""
 
 #. Author of the plugin
@@ -30,6 +27,303 @@ msgstr ""
 msgid "Git Embed for feiCode"
 msgstr ""
 
-#. Author URI of the plugin
-msgid "https://cn.feicode.com"
+#: block.js
+msgid "Avatar Size"
 msgstr ""
+
+#: block.js
+msgid "Bordered"
+msgstr ""
+
+#: block.js
+msgid "Button Options"
+msgstr ""
+
+#: block.js
+msgid "Button Size"
+msgstr ""
+
+#: block.js
+msgid "Button Style"
+msgstr ""
+
+#: block.js
+msgid "Card Style"
+msgstr ""
+
+#: block.js
+msgid "Clone"
+msgstr ""
+
+#: block.js
+msgid "Clone URL:"
+msgstr ""
+
+#: block.js
+msgid "Configure your repository details in the sidebar"
+msgstr ""
+
+#: block.js
+msgid "Custom Domain"
+msgstr ""
+
+#: block.js
+msgid "Custom Git Service"
+msgstr ""
+
+#: block.js
+msgid "Custom Site Name (Optional)"
+msgstr ""
+
+#: block.js
+msgid "Default"
+msgstr ""
+
+#: block.js
+msgid "Display Options"
+msgstr ""
+
+#: block.js
+msgid "Download"
+msgstr ""
+
+#: block.js
+msgid "Download ZIP"
+msgstr ""
+
+#: block.js
+msgid "Embed a Git repository with information and stats"
+msgstr ""
+
+#: block.js
+msgid "Enter the domain of your"
+msgstr ""
+
+#: block.js
+msgid "Failed to fetch repository"
+msgstr ""
+
+#: block.js
+msgid "Fetch Repository"
+msgstr ""
+
+#: block.js
+msgid "Fetching repository data..."
+msgstr ""
+
+#: block.js
+msgid "Fetching..."
+msgstr ""
+
+#: block.js
+msgid "Forgejo"
+msgstr ""
+
+#: block.js
+msgid "Forks"
+msgstr ""
+
+#: block.js
+msgid "Forks:"
+msgstr ""
+
+#: block.js
+msgid "Ghost"
+msgstr ""
+
+#: block.js
+msgid "Git Repository"
+msgstr ""
+
+#: block.js
+msgid "Git Repository Embed"
+msgstr ""
+
+#: block.js
+msgid "GitHub"
+msgstr ""
+
+#: block.js
+msgid "GitLab (Self-hosted)"
+msgstr ""
+
+#: block.js
+msgid "Gitea"
+msgstr ""
+
+#: block.js
+msgid "Glassmorphism"
+msgstr ""
+
+#: block.js
+msgid "Gradient"
+msgstr ""
+
+#: block.js
+msgid "Issues"
+msgstr ""
+
+#: block.js
+msgid "Issues:"
+msgstr ""
+
+#: block.js
+msgid "Large"
+msgstr ""
+
+#: block.js
+msgid "Medium"
+msgstr ""
+
+#: block.js
+msgid "Minimal"
+msgstr ""
+
+#: block.js
+msgid "Network error occurred"
+msgstr ""
+
+#: block.js
+msgid "Outline"
+msgstr ""
+
+#: block.js
+msgid "Override the automatically detected site name"
+msgstr ""
+
+#: block.js
+msgid "Owner Avatar"
+msgstr ""
+
+#: block.js
+msgid "Platform"
+msgstr ""
+
+#: block.js
+msgid "Please enter custom domain for"
+msgstr ""
+
+#: block.js
+msgid "Please enter repository owner and name"
+msgstr ""
+
+#: block.js
+msgid "Primary (Green)"
+msgstr ""
+
+#: block.js
+msgid "Repository Avatar"
+msgstr ""
+
+#: block.js
+msgid "Repository Name"
+msgstr ""
+
+#: block.js
+msgid "Repository Owner"
+msgstr ""
+
+#: block.js
+msgid "Repository Settings"
+msgstr ""
+
+#: block.js
+msgid "Repository has custom avatar"
+msgstr ""
+
+#: block.js
+msgid "Secondary (Gray)"
+msgstr ""
+
+#: block.js
+msgid "Self-hosted Git service requires custom domain"
+msgstr ""
+
+#: block.js
+msgid "Shadow"
+msgstr ""
+
+#: block.js
+msgid "Show Action Buttons"
+msgstr ""
+
+#: block.js
+msgid "Show Avatar"
+msgstr ""
+
+#: block.js
+msgid "Show Clone Button"
+msgstr ""
+
+#: block.js
+msgid "Show Description"
+msgstr ""
+
+#: block.js
+msgid "Show Download ZIP Button"
+msgstr ""
+
+#: block.js
+msgid "Show Forks Button"
+msgstr ""
+
+#: block.js
+msgid "Show Issues Button"
+msgstr ""
+
+#: block.js
+msgid "Show Programming Language"
+msgstr ""
+
+#: block.js
+msgid "Show Site Information"
+msgstr ""
+
+#: block.js
+msgid "Show Statistics"
+msgstr ""
+
+#: block.js
+msgid "Show View Repository Button"
+msgstr ""
+
+#: block.js
+msgid "Shows repository avatar if available, otherwise owner avatar"
+msgstr ""
+
+#: block.js
+msgid "Small"
+msgstr ""
+
+#: block.js
+msgid "Stars:"
+msgstr ""
+
+#: block.js
+msgid "Style Options"
+msgstr ""
+
+#: block.js
+msgid "View Repository"
+msgstr ""
+
+#: block.js
+msgid "e.g. Company Git"
+msgstr ""
+
+#: block.js
+msgid "e.g. facebook"
+msgstr ""
+
+#: block.js
+msgid "e.g. git.example.com"
+msgstr ""
+
+#: block.js
+msgid "e.g. react"
+msgstr ""
+
+#: block.js
+msgid "instance"
+msgstr ""
+

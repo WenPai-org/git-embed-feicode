@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Description: Embed Git repositories from GitHub/Gitlab/Gitea/Forgejo and Self-hosted Git service with beautiful cards
  * Version: 1.0.2
  * Author: feiCode
- * Author URI: https://cn.feicode.com
+ * Author URI: https://feicode.com
  * Text Domain: git-embed-feicode
  * Domain Path: /languages
  * Requires at least: 5.0

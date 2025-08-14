@@ -1,301 +1,409 @@
-# Copyright (C) 2024 feiCode
-# This file is distributed under the same license as the Git Embed for feiCode plugin.
-# Translators:
-# feiCode Team, 2024
 msgid ""
 msgstr ""
-"Project-Id-Version: Git Embed for feiCode 1.0.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/git-embed-feicode\n"
-"POT-Creation-Date: 2024-12-31 12:00+0000\n"
-"PO-Revision-Date: 2025-08-01 01:09+0800\n"
-"Last-Translator: feiCode Team\n"
-"Language-Team: Chinese (China)\n"
+"Project-Id-Version: Git Embed for feiCode\n"
+"POT-Creation-Date: 2025-08-14 09:37+0800\n"
+"PO-Revision-Date: 2025-08-14 09:46+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.6\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: git-embed-feicode.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: assets/block.js:22
+msgid "Git Repository"
+msgstr "Git 仓库"
+
+#: assets/block.js:23
+msgid "Embed a Git repository with information and stats"
+msgstr "嵌入包含信息和统计数据的 Git 仓库"
+
+#: assets/block.js:134 git-embed-feicode.php:1045
+msgid "Please enter repository owner and name"
+msgstr "请输入仓库所有者和名称"
+
+#: assets/block.js:139
+msgid "Please enter custom domain for"
+msgstr "请输入自定义域名"
+
+#: assets/block.js:166 git-embed-feicode.php:1055
+msgid "Failed to fetch repository"
+msgstr "获取仓库失败"
+
+#: assets/block.js:172
+msgid "Network error occurred"
+msgstr "网络错误"
+
+#: assets/block.js:201
+msgid "Fetching repository data..."
+msgstr "正在获取仓库数据..."
+
+#: assets/block.js:216
+msgid "Git Repository Embed"
+msgstr "Git 仓库嵌入"
+
+#: assets/block.js:217
+msgid "Configure your repository details in the sidebar"
+msgstr "在侧边栏配置您的仓库详情"
+
+#: assets/block.js:230 assets/block.js:346
+msgid "Download"
+msgstr "下载"
+
+#: assets/block.js:231 assets/block.js:347 git-embed-feicode.php:792
+#: git-embed-feicode.php:929
+msgid "Download ZIP"
+msgstr "下载 ZIP"
+
+#: assets/block.js:260 git-embed-feicode.php:825
+msgid "Repository Avatar"
+msgstr "仓库头像"
+
+#: assets/block.js:260 git-embed-feicode.php:826
+msgid "Owner Avatar"
+msgstr "所有者头像"
+
+#: assets/block.js:281 git-embed-feicode.php:848
+msgid "Repository has custom avatar"
+msgstr "仓库有自定义头像"
+
+#: assets/block.js:307 git-embed-feicode.php:881
+msgid "Stars:"
+msgstr "星标："
+
+#: assets/block.js:312 git-embed-feicode.php:886
+msgid "Forks:"
+msgstr "分叉："
+
+#: assets/block.js:317 git-embed-feicode.php:891
+msgid "Issues:"
+msgstr "议题："
+
+#: assets/block.js:330 git-embed-feicode.php:904
+msgid "View Repository"
+msgstr "查看仓库"
+
+#: assets/block.js:334
+msgid "Clone URL:"
+msgstr "克隆网址："
+
+#: assets/block.js:337 git-embed-feicode.php:915
+msgid "Clone"
+msgstr "克隆"
+
+#: assets/block.js:356
+msgid "Issues"
+msgstr "议题"
+
+#: assets/block.js:365
+msgid "Forks"
+msgstr "分叉"
+
+#: assets/block.js:380
+msgid "Repository Settings"
+msgstr "仓库设置"
+
+#: assets/block.js:384
+msgid "Platform"
+msgstr "平台"
+
+#: assets/block.js:387
+msgid "GitHub"
+msgstr "GitHub"
+
+#: assets/block.js:388
+msgid "Gitea"
+msgstr "Gitea"
+
+#: assets/block.js:389
+msgid "Forgejo"
+msgstr "Forgejo"
+
+#: assets/block.js:390
+msgid "GitLab (Self-hosted)"
+msgstr "GitLab（自托管）"
+
+#: assets/block.js:391
+msgid "Custom Git Service"
+msgstr "自定义 Git 服务"
+
+#: assets/block.js:394
+msgid "Self-hosted Git service requires custom domain"
+msgstr "自托管 Git 服务需要自定义域名"
+
+#: assets/block.js:399
+msgid "Custom Domain"
+msgstr "自定义域名"
+
+#: assets/block.js:402
+msgid "e.g. git.example.com"
+msgstr "示例：git.example.com"
+
+#: assets/block.js:403
+msgid "Enter the domain of your"
+msgstr "输入您的实例域名"
+
+#: assets/block.js:403
+msgid "instance"
+msgstr "实例"
+
+#: assets/block.js:408
+msgid "Custom Site Name (Optional)"
+msgstr "自定义站点名称（可选）"
+
+#: assets/block.js:411
+msgid "e.g. Company Git"
+msgstr "示例：Company Git"
+
+#: assets/block.js:412
+msgid "Override the automatically detected site name"
+msgstr "覆盖自动检测的站点名称"
+
+#: assets/block.js:417
+msgid "Repository Owner"
+msgstr "仓库所有者"
+
+#: assets/block.js:420
+msgid "e.g. facebook"
+msgstr "示例：facebook"
+
+#: assets/block.js:425
+msgid "Repository Name"
+msgstr "仓库名称"
+
+#: assets/block.js:428
+msgid "e.g. react"
+msgstr "e.g. react"
+
+#: assets/block.js:437
+msgid "Fetching..."
+msgstr "正在获取..."
+
+#: assets/block.js:437
+msgid "Fetch Repository"
+msgstr "获取仓库"
+
+#: assets/block.js:440
+msgid "Display Options"
+msgstr "显示选项"
+
+#: assets/block.js:444
+msgid "Show Site Information"
+msgstr "显示站点信息"
+
+#: assets/block.js:449
+msgid "Show Avatar"
+msgstr "显示头像"
+
+#: assets/block.js:452
+msgid "Shows repository avatar if available, otherwise owner avatar"
+msgstr "如果可用，显示仓库头像，否则显示所有者头像"
+
+#: assets/block.js:455
+msgid "Avatar Size"
+msgstr "头像大小"
+
+#: assets/block.js:458 assets/block.js:540
+msgid "Small"
+msgstr "小"
+
+#: assets/block.js:459 assets/block.js:541
+msgid "Medium"
+msgstr "中"
+
+#: assets/block.js:460 assets/block.js:542
+msgid "Large"
+msgstr "大"
+
+#: assets/block.js:467
+msgid "Show Description"
+msgstr "显示描述"
+
+#: assets/block.js:472
+msgid "Show Programming Language"
+msgstr "显示编程语言"
+
+#: assets/block.js:477
+msgid "Show Statistics"
+msgstr "显示统计数据"
+
+#: assets/block.js:482
+msgid "Show Action Buttons"
+msgstr "显示操作按钮"
+
+#: assets/block.js:488
+msgid "Button Options"
+msgstr "按钮选项"
+
+#: assets/block.js:492
+msgid "Show View Repository Button"
+msgstr "显示查看仓库按钮"
+
+#: assets/block.js:498
+msgid "Show Clone Button"
+msgstr "显示克隆按钮"
+
+#: assets/block.js:504
+msgid "Show Download ZIP Button"
+msgstr "显示下载 ZIP 按钮"
+
+#: assets/block.js:510
+msgid "Show Issues Button"
+msgstr "显示议题按钮"
+
+#: assets/block.js:516
+msgid "Show Forks Button"
+msgstr "显示分叉按钮"
+
+#: assets/block.js:522
+msgid "Button Style"
+msgstr "按钮样式"
+
+#: assets/block.js:525 assets/block.js:558
+msgid "Default"
+msgstr "默认"
+
+#: assets/block.js:526
+msgid "Primary (Green)"
+msgstr "主要（绿色）"
+
+#: assets/block.js:527
+msgid "Secondary (Gray)"
+msgstr "次要（灰色）"
+
+#: assets/block.js:528
+msgid "Outline"
+msgstr "轮廓"
+
+#: assets/block.js:529
+msgid "Ghost"
+msgstr "透明"
+
+#: assets/block.js:537
+msgid "Button Size"
+msgstr "按钮大小"
+
+#: assets/block.js:551
+msgid "Style Options"
+msgstr "样式选项"
+
+#: assets/block.js:555
+msgid "Card Style"
+msgstr "卡片样式"
+
+#: assets/block.js:559
+msgid "Minimal"
+msgstr "简约"
+
+#: assets/block.js:560
+msgid "Bordered"
+msgstr "边框"
+
+#: assets/block.js:561
+msgid "Shadow"
+msgstr "阴影"
+
+#: assets/block.js:562
+msgid "Gradient"
+msgstr "渐变"
+
+#: assets/block.js:563
+msgid "Glassmorphism"
+msgstr "玻璃态"
+
+#: git-embed-feicode.php:201 git-embed-feicode.php:1076
+msgid "Repository information required"
+msgstr "需要仓库信息"
+
+#: git-embed-feicode.php:214
+#, php-format
+msgid "Custom domain required for %s"
+msgstr "%s需要自定义域名"
+
+#: git-embed-feicode.php:232
+msgid "Failed to fetch repository data"
+msgstr "获取仓库失败"
+
+#: git-embed-feicode.php:420
+msgid "Latest Code"
+msgstr "最新代码"
+
+#: git-embed-feicode.php:585
+msgid "Git Service"
+msgstr "Git 服务"
+
+#: git-embed-feicode.php:702
+msgid "Organization"
+msgstr "组织"
+
+#: git-embed-feicode.php:706
+msgid "User"
+msgstr "用户"
+
+#: git-embed-feicode.php:785
+#, php-format
+msgid "Download %s (%s)"
+msgstr "下载 %s (%s)"
+
+#: git-embed-feicode.php:913
+msgid "Click to copy clone URL"
+msgstr "点击复制克隆URL"
+
+#: git-embed-feicode.php:927
+#, php-format
+msgid "Download %s"
+msgstr "下载 %s"
+
+#: git-embed-feicode.php:939
+#, php-format
+msgid "Issues (%s)"
+msgstr "议题(%s)"
+
+#: git-embed-feicode.php:948
+#, php-format
+msgid "Forks (%s)"
+msgstr "分叉 (%s)"
+
+#: git-embed-feicode.php:973 git-embed-feicode.php:1016
+msgid "Copied!"
+msgstr "已复制！"
+
+#: git-embed-feicode.php:1049
+#, php-format
+msgid "Please enter custom domain for %s"
+msgstr "请输入自定义域名%s"
+
+#: git-embed-feicode.php:1066
+msgid "Insufficient permissions"
+msgstr "权限不足"
+
+#: git-embed-feicode.php:1081
+msgid "Cache cleared successfully"
+msgstr "缓存清除成功"
 
 #. Plugin Name of the plugin/theme
 msgid "Git Embed for feiCode"
 msgstr "Git 仓库嵌入"
 
-#. Plugin Description of the plugin/theme
-msgid "Embed Git repositories from GitHub/Gitlab/Gitea/Forgejo and Self-hosted Git service with beautiful card"
+#. Description of the plugin/theme
+msgid ""
+"Embed Git repositories from GitHub/Gitlab/Gitea/Forgejo and Self-hosted Git "
+"service with beautiful cards"
 msgstr "使用精美卡片嵌入 Git 仓库"
 
 #. Author of the plugin/theme
 msgid "feiCode"
 msgstr "菲码源库"
 
-#: block.js:15
-msgid "Git Repository"
-msgstr "Git 仓库"
-
-#: block.js:16
-msgid "Embed a Git repository with information and stats"
-msgstr "嵌入包含信息和统计数据的 Git 仓库"
-
-#: block.js:170
-msgid "Repository Settings"
-msgstr "仓库设置"
-
-#: block.js:174
-msgid "Platform"
-msgstr "平台"
-
-#: block.js:185
-msgid "Custom Domain"
-msgstr "自定义域名"
-
-#: block.js:195
-msgid "Custom Site Name (Optional)"
-msgstr "自定义站点名称（可选）"
-
-#: block.js:205
-msgid "Repository Owner"
-msgstr "仓库所有者"
-
-#: block.js:214
-msgid "Repository Name"
-msgstr "仓库名称"
-
-#: block.js:227
-msgid "Display Options"
-msgstr "显示选项"
-
-#: block.js:231
-msgid "Show Site Information"
-msgstr "显示站点信息"
-
-#: block.js:235
-msgid "Show Avatar"
-msgstr "显示头像"
-
-#: block.js:240
-msgid "Avatar Size"
-msgstr "头像大小"
-
-#: block.js:252
-msgid "Show Description"
-msgstr "显示描述"
-
-#: block.js:256
-msgid "Show Programming Language"
-msgstr "显示编程语言"
-
-#: block.js:260
-msgid "Show Statistics"
-msgstr "显示统计数据"
-
-#: block.js:264
-msgid "Show Action Buttons"
-msgstr "显示操作按钮"
-
-#: block.js:269
-msgid "Button Options"
-msgstr "按钮选项"
-
-#: block.js:273
-msgid "Show View Repository Button"
-msgstr "显示查看仓库按钮"
-
-#: block.js:278
-msgid "Show Clone Button"
-msgstr "显示克隆按钮"
-
-#: block.js:283
-msgid "Show Download ZIP Button"
-msgstr "显示下载 ZIP 按钮"
-
-#: block.js:288
-msgid "Show Issues Button"
-msgstr "显示议题按钮"
-
-#: block.js:293
-msgid "Show Forks Button"
-msgstr "显示分叉按钮"
-
-#: block.js:298
-msgid "Button Style"
-msgstr "按钮样式"
-
-#: block.js:312
-msgid "Button Size"
-msgstr "按钮大小"
-
-#: block.js:326
-msgid "Style Options"
-msgstr "样式选项"
-
-#: block.js:330
-msgid "Card Style"
-msgstr "卡片样式"
-
-#: git-embed-feicode.php:85
-msgid "Repository information required"
-msgstr "需要仓库信息"
-
-#: git-embed-feicode.php:89
-msgid "Custom domain required for %s"
-msgstr "%s 需要自定义域名"
-
-#: git-embed-feicode.php:95
-msgid "Failed to fetch repository data"
-msgstr "获取仓库数据失败"
-
-#: git-embed-feicode.php:672
-msgid "Insufficient permissions"
-msgstr "权限不足"
-
-#: git-embed-feicode.php:684
-msgid "Cache cleared successfully"
-msgstr "缓存清理成功"
-
-#. Error messages
-msgid "Please enter repository owner and name"
-msgstr "请输入仓库所有者和名称"
-
-#, javascript-format
-msgid "Please enter custom domain for %s"
-msgstr "请输入 %s 的自定义域名"
-
-msgid "Fetching repository data..."
-msgstr "正在获取仓库数据..."
-
-msgid "Failed to fetch repository"
-msgstr "获取仓库失败"
-
-msgid "Network error occurred"
-msgstr "网络错误"
-
-msgid "Configure your repository details in the sidebar"
-msgstr "在侧边栏配置您的仓库详情"
-
-msgid "Fetch Repository"
-msgstr "获取仓库"
-
-msgid "Fetching..."
-msgstr "正在获取..."
-
-#. Help texts
-msgid "Self-hosted Git service requires custom domain"
-msgstr "自托管 Git 服务需要自定义域名"
-
-#, javascript-format
-msgid "Enter the domain of your %s instance"
-msgstr "输入您的 %s 实例域名"
-
-msgid "Override the automatically detected site name"
-msgstr "覆盖自动检测的站点名称"
-
-msgid "Shows repository avatar if available, otherwise owner avatar"
-msgstr "如果可用，显示仓库头像，否则显示所有者头像"
-
-#. Button labels
-msgid "View Repository"
-msgstr "查看仓库"
-
-msgid "Clone"
-msgstr "克隆"
-
-msgid "Download %s (%s)"
-msgstr "下载 %s (%s)"
-
-msgid "Download ZIP"
-msgstr "下载 ZIP"
-
-msgid "Issues"
-msgstr "议题"
-
-msgid "Forks"
-msgstr "分叉"
-
-msgid "Copied!"
-msgstr "已复制！"
-
-#. Stats labels
-msgid "Stars:"
-msgstr "星标："
-
-msgid "Forks:"
-msgstr "分叉："
-
-msgid "Issues:"
-msgstr "议题："
-
-#. Options
-msgid "GitHub"
-msgstr "GitHub"
-
-msgid "Gitea"
-msgstr "Gitea"
-
-msgid "Forgejo"
-msgstr "Forgejo"
-
-msgid "GitLab (Self-hosted)"
-msgstr "GitLab（自托管）"
-
-msgid "Custom Git Service"
-msgstr "自定义 Git 服务"
-
-msgid "Small"
-msgstr "小"
-
-msgid "Medium"
-msgstr "中"
-
-msgid "Large"
-msgstr "大"
-
-msgid "Default"
-msgstr "默认"
-
-msgid "Primary (Green)"
-msgstr "主要（绿色）"
-
-msgid "Secondary (Gray)"
-msgstr "次要（灰色）"
-
-msgid "Outline"
-msgstr "轮廓"
-
-msgid "Ghost"
-msgstr "幽灵"
-
-msgid "Minimal"
-msgstr "简约"
-
-msgid "Bordered"
-msgstr "边框"
-
-msgid "Shadow"
-msgstr "阴影"
-
-msgid "Gradient"
-msgstr "渐变"
-
-msgid "Glassmorphism"
-msgstr "玻璃态"
-
-#. Tooltips and titles
-msgid "Click to copy clone URL"
-msgstr "点击复制克隆链接"
-
-msgid "Repository Avatar"
-msgstr "仓库头像"
-
-msgid "Owner Avatar"
-msgstr "所有者头像"
-
-msgid "Repository has custom avatar"
-msgstr "仓库有自定义头像"
-
-#. Owner types
-msgid "Organization"
-msgstr "组织"
-
-msgid "User"
-msgstr "用户"
+#. Author URI of the plugin/theme
+msgid "https://feicode.com"
+msgstr "https://feicode.com"
